@@ -3,6 +3,8 @@ import { useState, useTransition, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase/client'
 
+import { loginAction } from './actions'
+
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -17,13 +19,10 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     startTransition(async () => {
-      // 1. Autenticar con Supabase Auth
-      const { data: authData, error: authErr } = await sb.auth.signInWithPassword({
-        email: email.trim().toLowerCase(),
-        password,
-      })
+      // 1. Autenticar usando Server Action (esto fuerza la cookie HTTP)
+      const result = await loginAction(email.trim().toLowerCase(), password)
 
-      if (authErr || !authData.user) {
+      if (result.error || !result.userId) {
         setError('Correo o contraseña incorrectos')
         return
       }
