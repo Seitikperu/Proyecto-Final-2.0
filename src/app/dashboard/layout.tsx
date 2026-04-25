@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer } from '@/components/ui/Toast'
-import { PROYECTOS, Proyecto } from '@/lib/context/ProyectoContext'
+import { Proyecto } from '@/lib/context/ProyectoContext'
+import { getSupabaseClient } from '@/lib/supabase/client'
 
 interface CisUser {
   id: number
@@ -64,7 +65,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [pathname, router])
 
-  function logout() {
+  async function logout() {
+    await getSupabaseClient().auth.signOut()
     sessionStorage.removeItem('cis_usuario')
     sessionStorage.removeItem('cis_proyecto')
     router.push('/login')

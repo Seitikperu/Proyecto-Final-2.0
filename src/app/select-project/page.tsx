@@ -103,7 +103,8 @@ export default function SelectProjectPage() {
     setTimeout(() => router.push('/select-module'), 350)
   }
 
-  function cerrarSesion() {
+  async function cerrarSesion() {
+    await sb.auth.signOut()
     sessionStorage.removeItem('cis_usuario')
     sessionStorage.removeItem('cis_proyecto')
     router.push('/login')

@@ -1,19 +1,12 @@
 'use client'
 import { useState, useTransition, Suspense } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase/client'
-
-interface UsuarioRow {
-  id: number
-  nombre: string
-  datos: string | null
-  acceso: string | null
-  id_personal: string | null
-}
 
 function LoginForm() {
   const router = useRouter()
-  const [nombre, setNombre] = useState('')
+  const searchParams = useSearchParams()
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPwd, setShowPwd] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -24,35 +17,48 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     startTransition(async () => {
-      const { data, error: dbErr } = await sb
+      // 1. Autenticar con Supabase Auth
+      const { data: authData, error: authErr } = await sb.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      })
+
+      if (authErr || !authData.user) {
+        setError('Correo o contraseña incorrectos')
+        return
+      }
+
+      // 2. Obtener perfil desde la tabla usuarios usando auth_id
+      const { data: perfil, error: perfilErr } = await sb
         .from('usuarios')
-        .select('id, nombre, datos, acceso, id_personal')
-        .eq('nombre', nombre.trim())
-        .eq('contrasena', password)
+        .select('id, nombre, datos, acceso, id_personal, rol_global')
+        .eq('auth_id', authData.user.id)
         .eq('activo', true)
         .maybeSingle()
 
-      if (dbErr) { setError(dbErr.message); return }
-      if (!data) { setError('Usuario o contrasena incorrectos'); return }
-
-      const usuario = data as UsuarioRow
+      if (perfilErr || !perfil) {
+        await sb.auth.signOut()
+        setError('Usuario no tiene acceso al sistema')
+        return
+      }
 
       sessionStorage.setItem('cis_usuario', JSON.stringify({
-        id: usuario.id,
-        nombre: usuario.nombre,
-        datos: usuario.datos,
-        acceso: usuario.acceso,
-        id_personal: usuario.id_personal,
+        id:          perfil.id,
+        nombre:      perfil.nombre,
+        datos:       perfil.datos,
+        acceso:      perfil.acceso,
+        id_personal: perfil.id_personal,
+        rol_global:  perfil.rol_global,
       }))
 
-      document.cookie = 'cis_session=1; path=/; SameSite=Lax'
-
-      router.push('/select-project')
+      const redirectTo = searchParams.get('redirectTo') || '/select-project'
+      router.push(redirectTo)
     })
   }
 
   return (
     <main className="min-h-screen flex items-stretch font-sans">
+      {/* Panel izquierdo — imagen */}
       <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-3 bg-blue-900 z-10" />
         <div className="absolute left-5 top-0 bottom-0 w-1.5 bg-blue-700/60 z-10" />
@@ -70,9 +76,9 @@ function LoginForm() {
             <span className="text-white font-bold text-lg tracking-wide">CIS Nicaragua</span>
           </div>
           <h2 className="text-white text-3xl font-extrabold leading-tight drop-shadow-lg">
-            Sistema de Gestion<br />de Almacen
+            Sistema de Gestión<br />de Almacén
           </h2>
-          <p className="text-blue-200 text-sm mt-2 drop-shadow">Unidad Minera Jabali - Nicaragua</p>
+          <p className="text-blue-200 text-sm mt-2 drop-shadow">Unidad Minera Jabalí - Nicaragua</p>
           <div className="flex items-center gap-2 mt-4 bg-green-500/10 border border-green-500/20 rounded-full px-3 py-1.5 w-fit">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             <span className="text-green-400 text-xs font-medium">Conectado a Supabase</span>
@@ -80,8 +86,10 @@ function LoginForm() {
         </div>
       </div>
 
+      {/* Panel derecho — formulario */}
       <div className="flex-1 flex items-center justify-center bg-slate-950 px-8 py-12">
         <div className="w-full max-w-sm">
+          {/* Logo mobile */}
           <div className="lg:hidden text-center mb-8">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 mb-3 shadow-lg shadow-blue-600/30">
               <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,38 +100,40 @@ function LoginForm() {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">Iniciar sesion</h1>
+            <h1 className="text-2xl font-extrabold text-white tracking-tight">Iniciar sesión</h1>
             <p className="text-slate-400 text-sm mt-1">Ingresa tus credenciales para continuar</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5" noValidate>
+            {/* Campo email */}
             <div>
-              <label htmlFor="nombre" className="block text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2">
-                Usuario
+              <label htmlFor="email" className="block text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2">
+                Correo electrónico
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
                 </div>
                 <input
-                  id="nombre"
-                  type="text"
-                  value={nombre}
-                  onChange={e => setNombre(e.target.value)}
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   required
-                  autoComplete="username"
-                  placeholder="Tu nombre de usuario"
+                  autoComplete="email"
+                  placeholder="tu@correo.com"
                   disabled={isPending}
                   className="w-full bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50"
                 />
               </div>
             </div>
 
+            {/* Campo contraseña */}
             <div>
               <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2">
-                Contrasena
+                Contraseña
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -138,7 +148,7 @@ function LoginForm() {
                   onChange={e => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  placeholder="..."
+                  placeholder="••••••••"
                   disabled={isPending}
                   className="w-full bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50"
                 />
@@ -161,6 +171,7 @@ function LoginForm() {
               </div>
             </div>
 
+            {/* Error */}
             {error && (
               <div className="flex items-start gap-2.5 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
                 <svg className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -170,9 +181,10 @@ function LoginForm() {
               </div>
             )}
 
+            {/* Botón submit */}
             <button
               type="submit"
-              disabled={isPending || !nombre || !password}
+              disabled={isPending || !email || !password}
               className="relative w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-blue-600/20 hover:shadow-blue-500/30 disabled:shadow-none overflow-hidden group"
             >
               <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700" />
@@ -198,7 +210,7 @@ function LoginForm() {
           </form>
 
           <p className="text-center text-xs text-slate-600 mt-8">
-            2025 CIS Nicaragua - Unidad Minera Jabali - v2.0
+            © 2025 CIS Nicaragua - Unidad Minera Jabalí - v2.0
           </p>
         </div>
       </div>
