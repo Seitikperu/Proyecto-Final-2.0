@@ -26,13 +26,19 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p))
 
   // 1. Si no hay sesión y la ruta NO es pública -> pa' fuera (al login)
   if (!user && !isPublic) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('redirectTo', pathname)
+    // PARA DEPURAR: Si hubo un error en Supabase al leer la sesión, lo pasamos en la URL
+    if (authError) {
+      loginUrl.searchParams.set('debug_error', authError.message)
+    } else {
+      loginUrl.searchParams.set('debug_error', 'no_cookie_found')
+    }
     return NextResponse.redirect(loginUrl)
   }
 
