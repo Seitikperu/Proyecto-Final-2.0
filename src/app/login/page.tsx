@@ -51,6 +51,11 @@ function LoginForm() {
         rol_global:  perfil.rol_global,
       }))
 
+      // Esperar 500ms para asegurar que el Auth Listener haya guardado la cookie de sesión (Race condition fix)
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      router.refresh() // Obligar a Next.js a recargar el contexto del servidor
+      
       const redirectTo = searchParams.get('redirectTo') || '/select-project'
       router.push(redirectTo)
     })
