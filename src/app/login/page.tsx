@@ -31,7 +31,7 @@ function LoginForm() {
       const { data: perfil, error: perfilErr } = await sb
         .from('usuarios')
         .select('id, nombre, datos, acceso, id_personal, rol_global')
-        .eq('auth_id', authData.user.id)
+        .eq('auth_id', result.userId)
         .eq('activo', true)
         .maybeSingle()
 
