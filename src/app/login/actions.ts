@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 
 export async function loginAction(email: string, password: string) {
   try {
@@ -17,6 +18,9 @@ export async function loginAction(email: string, password: string) {
     if (error) {
       return { error: error.message }
     }
+
+    // OBLIGATORIO en Next.js para que las cookies del Server Action se guarden
+    revalidatePath('/', 'layout')
 
     return { success: true, userId: data.user?.id }
   } catch (err: any) {
