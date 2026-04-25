@@ -5,10 +5,6 @@ const PUBLIC_PATHS = ['/login']
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-
-  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p))
-  if (isPublic) return NextResponse.next()
-
   let response = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -31,11 +27,19 @@ export async function middleware(request: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
+  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p))
 
-  if (!user) {
+  // 1. Si no hay sesión y la ruta NO es pública -> pa' fuera (al login)
+  if (!user && !isPublic) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('redirectTo', pathname)
     return NextResponse.redirect(loginUrl)
+  }
+
+  // 2. Si HAY sesión y está en el login -> pa' adentro automáticamente
+  if (user && pathname === '/login') {
+    const redirectTo = request.nextUrl.searchParams.get('redirectTo') || '/select-project'
+    return NextResponse.redirect(new URL(redirectTo, request.url))
   }
 
   return response
