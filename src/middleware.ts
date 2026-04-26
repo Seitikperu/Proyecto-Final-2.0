@@ -1,54 +1,34 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const PUBLIC_PATHS = ['/login']
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  let response = NextResponse.next({ request })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          response = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options as never)
-          )
-        },
-      },
-    }
-  )
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p))
 
-  // 1. Si no hay sesión y la ruta NO es pública -> pa' fuera (al login)
-  if (!user && !isPublic) {
-    const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('redirectTo', pathname)
-    // PARA DEPURAR: Si hubo un error en Supabase al leer la sesión, lo pasamos en la URL
-    if (authError) {
-      loginUrl.searchParams.set('debug_error', authError.message)
-    } else {
-      loginUrl.searchParams.set('debug_error', 'no_cookie_found')
-    }
-    return NextResponse.redirect(loginUrl)
+  // Buscar la cookie manual que nosotros creamos (bypass del bug de Supabase SSR)
+  const cisSession = request.cookies.get('cis_session')
+  
+  // Buscar también la cookie de Supabase por si acaso
+  const supabaseSession = request.cookies.getAll().find(
+    (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token')
+  )
+  
+  const hasSession = !!(cisSession || supabaseSession)
+
+  if (!hasSession && !isPublic) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('redirectTo', pathname)
+    return NextResponse.redirect(url)
   }
 
-  // 2. Si HAY sesión y está en el login -> pa' adentro automáticamente
-  if (user && pathname === '/login') {
+  if (hasSession && pathname === '/login') {
     const redirectTo = request.nextUrl.searchParams.get('redirectTo') || '/select-project'
     return NextResponse.redirect(new URL(redirectTo, request.url))
   }
 
-  return response
+  return NextResponse.next()
 }
 
 export const config = {

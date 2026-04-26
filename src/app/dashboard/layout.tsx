@@ -47,7 +47,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem('cis_usuario')
+      const raw = localStorage.getItem('cis_usuario')
       if (!raw) {
         router.replace('/login?redirectTo=' + encodeURIComponent(pathname))
         return
@@ -55,9 +55,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       setUser(JSON.parse(raw) as CisUser)
 
       // Leer proyecto seleccionado
-      const rawP = sessionStorage.getItem('cis_proyecto')
+      const rawP = localStorage.getItem('cis_proyecto')
       if (rawP) setProyecto(JSON.parse(rawP) as Proyecto)
-      else router.replace('/select-project')  // sin proyecto ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ volver a seleccionar
+      else router.replace('/select-project')  // sin proyecto -> volver a seleccionar
     } catch {
       router.replace('/login')
     } finally {
@@ -67,8 +67,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   async function logout() {
     await getSupabaseClient().auth.signOut()
-    sessionStorage.removeItem('cis_usuario')
-    sessionStorage.removeItem('cis_proyecto')
+    localStorage.removeItem('cis_usuario')
+    localStorage.removeItem('cis_proyecto')
+    document.cookie = 'cis_session=; path=/; max-age=0'
     router.push('/login')
   }
 

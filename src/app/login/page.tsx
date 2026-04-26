@@ -41,7 +41,7 @@ function LoginForm() {
         return
       }
 
-      sessionStorage.setItem('cis_usuario', JSON.stringify({
+      localStorage.setItem('cis_usuario', JSON.stringify({
         id:          perfil.id,
         nombre:      perfil.nombre,
         datos:       perfil.datos,
@@ -50,11 +50,9 @@ function LoginForm() {
         rol_global:  perfil.rol_global,
       }))
 
-      // Esperar 500ms para asegurar que el Auth Listener haya guardado la cookie de sesión (Race condition fix)
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      router.refresh() // Obligar a Next.js a recargar el contexto del servidor
-      
+      // Cookie explícita para el middleware (8 horas) - BYPASS del bug de Supabase SSR
+      document.cookie = 'cis_session=1; path=/; SameSite=Lax; max-age=28800'
+
       const redirectTo = searchParams.get('redirectTo') || '/select-project'
       router.push(redirectTo)
     })

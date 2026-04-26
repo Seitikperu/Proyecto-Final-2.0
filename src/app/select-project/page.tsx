@@ -43,7 +43,7 @@ export default function SelectProjectPage() {
   // ── Verificar sesión y cargar proyectos del usuario ──────────────────────
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem('cis_usuario')
+      const raw = localStorage.getItem('cis_usuario')
       if (!raw) { router.replace('/login'); return }
       const u = JSON.parse(raw) as CisUser
       setUsuario(u)
@@ -93,8 +93,8 @@ export default function SelectProjectPage() {
 
   function seleccionar(p: Proyecto) {
     setSelecting(p.id)
-    // Guardar proyecto en sessionStorage
-    sessionStorage.setItem('cis_proyecto', JSON.stringify({
+    // Guardar proyecto en localStorage
+    localStorage.setItem('cis_proyecto', JSON.stringify({
       id:          p.id,
       nombre:      p.nombre,
       descripcion: p.descripcion,
@@ -105,8 +105,8 @@ export default function SelectProjectPage() {
 
   async function cerrarSesion() {
     await sb.auth.signOut()
-    sessionStorage.removeItem('cis_usuario')
-    sessionStorage.removeItem('cis_proyecto')
+    localStorage.removeItem('cis_usuario')
+    localStorage.removeItem('cis_proyecto')
     router.push('/login')
   }
 
