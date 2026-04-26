@@ -98,10 +98,10 @@ export default function SelectModulePage() {
 
   useEffect(() => {
     try {
-      const rawUser = sessionStorage.getItem('cis_usuario')
+      const rawUser = localStorage.getItem('cis_usuario')
       if (!rawUser) { router.replace('/login'); return }
       setUsuario(JSON.parse(rawUser) as CisUser)
-      const rawP = sessionStorage.getItem('cis_proyecto')
+      const rawP = localStorage.getItem('cis_proyecto')
       if (!rawP) { router.replace('/select-project'); return }
       setProyecto(JSON.parse(rawP) as Proyecto)
     } catch {
