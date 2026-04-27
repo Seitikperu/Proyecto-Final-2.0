@@ -100,25 +100,25 @@ export default function IngresosPage() {
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-4">
             <BackButton />
-            <h1 className="text-xl font-bold text-white">Ingresos al Almacén</h1>
+            <h1 className="text-xl font-extrabold text-brand-black">Ingresos al Almacén</h1>
           </div>
             {/* Indicador Realtime */}
             <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium border transition-all ${
               realtime
-                ? 'bg-green-500/10 border-green-500/30 text-green-400'
-                : 'bg-slate-800 border-slate-700 text-slate-500'
+                ? 'bg-green-50 border-green-200 text-green-600'
+                : 'bg-white border-slate-200 text-brand-gray'
             }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${realtime ? 'bg-green-400 animate-pulse' : 'bg-slate-500'}`}/>
+              <span className={`w-1.5 h-1.5 rounded-full ${realtime ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`}/>
               {realtime ? 'Tiempo real activo' : 'Conectando…'}
             </div>
           </div>
-          <p className="text-slate-400 text-sm mt-0.5">
+          <p className="text-brand-gray text-sm mt-0.5">
             {loading ? 'Cargando…' : `${count.toLocaleString('es-NI')} registros`}
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 active:scale-95 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+          className="inline-flex items-center gap-2 bg-brand-red hover:bg-red-700 active:scale-95 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
           </svg>
@@ -127,52 +127,52 @@ export default function IngresosPage() {
       </div>
 
       {/* ── Filtros ── */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+      <div className="bg-white shadow-sm border border-slate-200 rounded-xl p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <input
             type="text"
             placeholder="Buscar código, descripción, proveedor…"
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
-            className="lg:col-span-2 bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="lg:col-span-2 bg-brand-light border border-slate-200 text-brand-black placeholder-brand-gray/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red transition-all"
           />
           <div>
-            <label className="text-xs text-slate-500 mb-1 block">Desde</label>
+            <label className="block text-[10px] font-bold text-brand-gray uppercase tracking-widest mb-1.5 pl-1">Desde</label>
             <input type="date" value={fechaDesde} onChange={e => setFechaDesde(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 text-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+              className="w-full bg-brand-light border border-slate-200 text-brand-black rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red transition-all"/>
           </div>
           <div>
-            <label className="text-xs text-slate-500 mb-1 block">Hasta</label>
+            <label className="block text-[10px] font-bold text-brand-gray uppercase tracking-widest mb-1.5 pl-1">Hasta</label>
             <input type="date" value={fechaHasta} onChange={e => setFechaHasta(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 text-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+              className="w-full bg-brand-light border border-slate-200 text-brand-black rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red transition-all"/>
           </div>
         </div>
         {(busqueda || fechaDesde || fechaHasta) && (
           <button onClick={() => { setBusqueda(''); setFechaDesde(''); setFechaHasta(''); setPage(1) }}
-            className="mt-2 text-xs text-slate-500 hover:text-slate-300 underline underline-offset-2">
+            className="mt-3 text-xs font-semibold text-brand-gray hover:text-brand-red transition-colors">
             Limpiar filtros
           </button>
         )}
       </div>
 
       {/* ── Tabla ── */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-800">
+              <tr className="bg-slate-50 border-b border-slate-200">
                 {['Fecha','Código','Descripción','Proveedor','Cantidad','Unidad','P.U. USD','Total USD','Familia'].map(h => (
-                  <th key={h} className="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-4 py-3 whitespace-nowrap">{h}</th>
+                  <th key={h} className="text-left text-xs font-bold text-brand-gray uppercase tracking-wider px-4 py-3.5 whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading
                 ? Array.from({ length: 8 }).map((_, i) => (
-                    <tr key={i} className="border-b border-slate-800/50">
+                    <tr key={i} className="border-b border-slate-100">
                       {Array.from({ length: 9 }).map((_, j) => (
                         <td key={j} className="px-4 py-3">
-                          <div className="h-4 bg-slate-800 rounded animate-pulse" style={{ width: `${50 + Math.random() * 40}%` }}/>
+                          <div className="h-4 bg-slate-200 rounded animate-pulse" style={{ width: `${50 + Math.random() * 40}%` }}/>
                         </td>
                       ))}
                     </tr>
@@ -182,33 +182,33 @@ export default function IngresosPage() {
                     <tr>
                       <td colSpan={9} className="text-center py-16">
                         <div className="flex flex-col items-center gap-2">
-                          <svg className="w-10 h-10 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                          <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                           </svg>
-                          <p className="text-slate-500 text-sm">No se encontraron registros</p>
+                          <p className="text-brand-gray font-semibold text-sm">No se encontraron registros</p>
                           {(busqueda || fechaDesde || fechaHasta) && (
-                            <p className="text-slate-600 text-xs">Prueba ajustando los filtros</p>
+                            <p className="text-brand-gray/60 text-xs">Prueba ajustando los filtros</p>
                           )}
                         </div>
                       </td>
                     </tr>
                   )
                   : rows.map((row, i) => (
-                    <tr key={row.id} className={`border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors ${i % 2 === 0 ? '' : 'bg-slate-800/10'}`}>
-                      <td className="px-4 py-2.5 text-slate-300 whitespace-nowrap text-xs">{fmtFecha(row.fecha)}</td>
-                      <td className="px-4 py-2.5">
-                        <code className="text-blue-400 text-xs bg-blue-500/10 px-1.5 py-0.5 rounded">{row.codigo ?? '—'}</code>
+                    <tr key={row.id} className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+                      <td className="px-4 py-3 text-brand-gray whitespace-nowrap text-xs">{fmtFecha(row.fecha)}</td>
+                      <td className="px-4 py-3">
+                        <code className="text-brand-black font-semibold text-xs bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">{row.codigo ?? '—'}</code>
                       </td>
-                      <td className="px-4 py-2.5 text-white max-w-xs">
+                      <td className="px-4 py-3 text-brand-black font-medium max-w-xs">
                         <p className="truncate text-sm">{row.descripcion ?? '—'}</p>
                       </td>
-                      <td className="px-4 py-2.5 text-slate-300 text-xs whitespace-nowrap">{row.proveedor ?? '—'}</td>
-                      <td className="px-4 py-2.5 text-slate-300 text-right font-mono">{row.cantidad?.toLocaleString('es-NI') ?? '—'}</td>
-                      <td className="px-4 py-2.5 text-slate-500 text-xs">{row.unidad ?? '—'}</td>
-                      <td className="px-4 py-2.5 text-slate-300 text-right whitespace-nowrap">{fmtUSD(row.pu_usd)}</td>
-                      <td className="px-4 py-2.5 text-green-400 font-semibold text-right whitespace-nowrap">{fmtUSD(row.total)}</td>
-                      <td className="px-4 py-2.5 text-xs">
-                        <span className="bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded truncate inline-block max-w-24">{row.familia ?? '—'}</span>
+                      <td className="px-4 py-3 text-brand-gray text-xs whitespace-nowrap">{row.proveedor ?? '—'}</td>
+                      <td className="px-4 py-3 text-brand-black font-semibold text-right font-mono">{row.cantidad?.toLocaleString('es-NI') ?? '—'}</td>
+                      <td className="px-4 py-3 text-brand-gray text-xs">{row.unidad ?? '—'}</td>
+                      <td className="px-4 py-3 text-brand-gray text-right whitespace-nowrap">{fmtUSD(row.pu_usd)}</td>
+                      <td className="px-4 py-3 text-green-600 font-bold text-right whitespace-nowrap">{fmtUSD(row.total)}</td>
+                      <td className="px-4 py-3 text-xs">
+                        <span className="bg-slate-100 border border-slate-200 text-brand-gray font-medium px-2 py-0.5 rounded truncate inline-block max-w-24">{row.familia ?? '—'}</span>
                       </td>
                     </tr>
                   ))
@@ -219,17 +219,17 @@ export default function IngresosPage() {
 
         {/* Paginación */}
         {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-slate-800">
-            <p className="text-slate-400 text-xs">
+          <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-slate-50/50">
+            <p className="text-brand-gray text-xs font-medium">
               Página {page} de {totalPages} — {count.toLocaleString('es-NI')} registros
             </p>
             <div className="flex gap-1">
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                className="px-3 py-1.5 text-sm text-slate-400 hover:text-white disabled:opacity-30 rounded-lg hover:bg-slate-800 transition-colors">
+                className="px-3 py-1.5 text-sm font-medium text-brand-gray hover:text-brand-black hover:bg-slate-200 disabled:opacity-30 rounded-lg transition-colors">
                 ← Anterior
               </button>
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                className="px-3 py-1.5 text-sm text-slate-400 hover:text-white disabled:opacity-30 rounded-lg hover:bg-slate-800 transition-colors">
+                className="px-3 py-1.5 text-sm font-medium text-brand-gray hover:text-brand-black hover:bg-slate-200 disabled:opacity-30 rounded-lg transition-colors">
                 Siguiente →
               </button>
             </div>

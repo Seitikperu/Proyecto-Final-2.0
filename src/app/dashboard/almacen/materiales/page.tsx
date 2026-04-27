@@ -7,10 +7,10 @@ import { BackButton } from '@/components/ui/BackButton'
 const PAGE_SIZE = 50
 
 function getBadgeClass(color: string): string {
-  if (color === 'green') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-900 text-green-300 border border-green-700'
-  if (color === 'red') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-900 text-red-300 border border-red-700'
-  if (color === 'blue') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-900 text-blue-300 border border-blue-700'
-  return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700'
+  if (color === 'green') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-50 text-green-700 border border-green-200'
+  if (color === 'red') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-red-50 text-red-600 border border-red-200'
+  if (color === 'blue') return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-slate-50 text-brand-black border border-slate-200'
+  return 'inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-brand-gray border border-slate-200'
 }
 
 function Badge({ label, color = 'slate' }: { label: string; color?: string }) {
@@ -51,9 +51,9 @@ export default function Page() {
         <div>
           <div className="flex items-center gap-4">
             <BackButton />
-            <h1 className="text-xl font-bold text-white">Catalogo de Materiales</h1>
+            <h1 className="text-xl font-extrabold text-brand-black">Catálogo de Materiales</h1>
           </div>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-brand-gray text-sm mt-1">
             {loading ? 'Cargando...' : count.toLocaleString() + ' materiales registrados'}
           </p>
         </div>
@@ -66,19 +66,19 @@ export default function Page() {
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Buscar por codigo o descripcion..."
-            className="flex-1 bg-slate-900 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Buscar por código o descripción..."
+            className="flex-1 bg-brand-light border border-slate-200 text-brand-black placeholder-brand-gray/60 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red transition-all"
           />
           <button
             onClick={handleSearch}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="bg-brand-red hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-brand-red/20 transition-all hover:shadow-brand-red/30 active:scale-95"
           >
             Buscar
           </button>
           {(busqueda || familiaFiltro) && (
             <button
               onClick={handleClear}
-              className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+              className="bg-white border border-slate-200 hover:bg-slate-50 text-brand-gray hover:text-brand-black px-4 py-2 rounded-xl text-sm font-semibold transition-colors"
             >
               Limpiar
             </button>
@@ -88,7 +88,7 @@ export default function Page() {
           <select
             value={familiaFiltro}
             onChange={e => { setFamiliaFiltro(e.target.value); setPage(1) }}
-            className="bg-slate-900 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm"
+            className="bg-white border border-slate-200 text-brand-black rounded-xl px-4 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-red transition-all shadow-sm"
           >
             <option value="">Todas las familias</option>
             {familias.sort().map(f => (
@@ -98,50 +98,50 @@ export default function Page() {
         )}
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-white shadow-sm border border-slate-200 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-950">
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Codigo</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Descripcion</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Unidad</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Familia</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Subfamilia</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Ubic. Jabali</th>
-                <th className="text-left px-4 py-3 text-slate-400 font-medium">Estado</th>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Código</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Descripción</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Unidad</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Familia</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Subfamilia</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Ubic. Jabalí</th>
+                <th className="text-left px-4 py-3.5 text-brand-gray font-bold uppercase tracking-wider text-xs">Estado</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 Array.from({ length: 10 }).map((_, i) => (
-                  <tr key={i} className="border-b border-slate-800">
+                  <tr key={i} className="border-b border-slate-100">
                     <td colSpan={7} className="px-4 py-3">
-                      <div className="h-4 bg-slate-800 rounded animate-pulse w-full" />
+                      <div className="h-4 bg-slate-200 rounded animate-pulse w-full" />
                     </td>
                   </tr>
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-16 text-center text-slate-500">
+                  <td colSpan={7} className="px-4 py-16 text-center text-brand-gray font-semibold">
                     No se encontraron materiales
                   </td>
                 </tr>
               ) : (
-                filtered.map((mat: Material) => (
-                  <tr key={mat.id} className="border-b border-slate-800 hover:bg-slate-800/40 transition-colors">
+                filtered.map((mat: Material, i: number) => (
+                  <tr key={mat.id} className={`border-b border-slate-100 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
                     <td className="px-4 py-3">
-                      <span className="font-mono text-blue-400 text-xs">{mat.codigo}</span>
+                      <code className="text-brand-black font-semibold text-xs bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">{mat.codigo}</code>
                     </td>
-                    <td className="px-4 py-3 text-white max-w-xs">
+                    <td className="px-4 py-3 text-brand-black font-medium max-w-xs">
                       {mat.descripcion ?? '-'}
                     </td>
-                    <td className="px-4 py-3 text-slate-300">{mat.unidad_medida ?? '-'}</td>
+                    <td className="px-4 py-3 text-brand-gray text-xs">{mat.unidad_medida ?? '-'}</td>
                     <td className="px-4 py-3">
-                      {mat.familia ? <Badge label={mat.familia} color="blue" /> : <span className="text-slate-600">-</span>}
+                      {mat.familia ? <Badge label={mat.familia} color="blue" /> : <span className="text-brand-gray">-</span>}
                     </td>
-                    <td className="px-4 py-3 text-slate-400 text-xs">{mat.subfamilia ?? '-'}</td>
-                    <td className="px-4 py-3 text-slate-400 text-xs">{mat.ubicacion_jabali ?? '-'}</td>
+                    <td className="px-4 py-3 text-brand-gray text-xs">{mat.subfamilia ?? '-'}</td>
+                    <td className="px-4 py-3 text-brand-gray text-xs">{mat.ubicacion_jabali ?? '-'}</td>
                     <td className="px-4 py-3">
                       <Badge label={mat.activo === 'SI' ? 'Activo' : 'Inactivo'} color={mat.activo === 'SI' ? 'green' : 'red'} />
                     </td>
@@ -153,22 +153,22 @@ export default function Page() {
         </div>
 
         {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-3 border-t border-slate-800">
-            <span className="text-slate-500 text-sm">
-              {'Pagina ' + page + ' de ' + totalPages + ' — ' + count.toLocaleString() + ' registros'}
+          <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-slate-50/50">
+            <span className="text-brand-gray font-medium text-xs">
+              {'Página ' + page + ' de ' + totalPages + ' — ' + count.toLocaleString() + ' registros'}
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="px-3 py-1.5 rounded-lg text-sm bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-slate-200 text-brand-gray hover:text-brand-black hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Anterior
               </button>
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="px-3 py-1.5 rounded-lg text-sm bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-white border border-slate-200 text-brand-gray hover:text-brand-black hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Siguiente
               </button>
