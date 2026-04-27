@@ -50,12 +50,13 @@ const MODULES = [
     label: 'Almacen',
     description: 'Ingresos, salidas, stock e inventario de materiales',
     href: '/dashboard/almacen/ingresos',
-    gradient: 'from-orange-500 to-amber-500',
-    shadowColor: 'hover:shadow-orange-500/25',
-    borderColor: 'border-orange-500/20',
-    textColor: 'text-orange-400',
-    bgIcon: 'bg-orange-500/10',
-    ringHover: 'hover:ring-orange-500/40',
+    gradient: 'from-brand-red/90 to-brand-red',
+    shadowColor: 'hover:shadow-brand-red/20',
+    borderColor: 'border-slate-200',
+    borderColorHover: 'group-hover:border-brand-red/40',
+    textColor: 'text-brand-black group-hover:text-brand-red',
+    bgIcon: 'bg-brand-light',
+    ringHover: 'hover:ring-brand-red/20',
     subItems: ['Dashboard', 'Ingresos', 'Salidas', 'Stock', 'Inventario'],
     Icon: IconAlmacen,
   },
@@ -64,12 +65,13 @@ const MODULES = [
     label: 'Produccion',
     description: 'Control diario, plan mensual, explosivos y vibraciones',
     href: '/dashboard/produccion',
-    gradient: 'from-blue-500 to-cyan-500',
-    shadowColor: 'hover:shadow-blue-500/25',
-    borderColor: 'border-blue-500/20',
-    textColor: 'text-blue-400',
-    bgIcon: 'bg-blue-500/10',
-    ringHover: 'hover:ring-blue-500/40',
+    gradient: 'from-brand-red/90 to-brand-red',
+    shadowColor: 'hover:shadow-brand-red/20',
+    borderColor: 'border-slate-200',
+    borderColorHover: 'group-hover:border-brand-red/40',
+    textColor: 'text-brand-black group-hover:text-brand-red',
+    bgIcon: 'bg-brand-light',
+    ringHover: 'hover:ring-brand-red/20',
     subItems: ['Control Diario', 'Plan Mensual', 'Explosivos', 'Vibraciones'],
     Icon: IconProduccion,
   },
@@ -78,12 +80,13 @@ const MODULES = [
     label: 'Maestros',
     description: 'Proveedores, CeCos, personal, equipos, materiales y labores',
     href: '/dashboard/maestros/proveedores',
-    gradient: 'from-emerald-500 to-teal-500',
-    shadowColor: 'hover:shadow-emerald-500/25',
-    borderColor: 'border-emerald-500/20',
-    textColor: 'text-emerald-400',
-    bgIcon: 'bg-emerald-500/10',
-    ringHover: 'hover:ring-emerald-500/40',
+    gradient: 'from-brand-red/90 to-brand-red',
+    shadowColor: 'hover:shadow-brand-red/20',
+    borderColor: 'border-slate-200',
+    borderColorHover: 'group-hover:border-brand-red/40',
+    textColor: 'text-brand-black group-hover:text-brand-red',
+    bgIcon: 'bg-brand-light',
+    ringHover: 'hover:ring-brand-red/20',
     subItems: ['Proveedores', 'CeCos', 'Personal', 'Equipos', 'Materiales', 'Labores'],
     Icon: IconMaestros,
   },
@@ -116,9 +119,9 @@ export default function SelectModulePage() {
 
   if (!usuario || !proyecto) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="flex items-center gap-3 text-slate-400">
-          <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+      <div className="min-h-screen bg-brand-light flex items-center justify-center">
+        <div className="flex items-center gap-3 text-brand-gray">
+          <svg className="w-5 h-5 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
@@ -129,33 +132,33 @@ export default function SelectModulePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
-      <header className="border-b border-slate-800/60 px-6 py-4">
+    <div className="min-h-screen bg-brand-light flex flex-col">
+      <header className="border-b border-slate-200 bg-white px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30">
+            <div className="w-9 h-9 rounded-xl bg-brand-red flex items-center justify-center shadow-sm">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
             </div>
             <div>
-              <p className="text-white font-semibold text-sm leading-tight">CIS Nicaragua</p>
-              <p className="text-slate-500 text-xs">Unidad Minera Jabali</p>
+              <p className="text-brand-black font-semibold text-sm leading-tight">CIS Nicaragua</p>
+              <p className="text-brand-gray text-xs">Unidad Minera Jabali</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <p className="text-slate-500 text-xs">Proyecto</p>
-              <p className="text-white text-sm font-medium">{proyecto.nombre}</p>
+              <p className="text-brand-gray text-xs">Proyecto</p>
+              <p className="text-brand-black text-sm font-medium">{proyecto.nombre}</p>
             </div>
             <button
               onClick={() => router.push('/select-project')}
-              className="text-slate-500 hover:text-slate-300 transition-colors text-xs border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5"
+              className="text-brand-gray hover:text-brand-red transition-colors text-xs border border-slate-200 hover:border-brand-red/30 rounded-lg px-3 py-1.5"
             >
               Cambiar proyecto
             </button>
-            <div className="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
-              <span className="text-blue-400 text-xs font-semibold">
+            <div className="w-8 h-8 rounded-full bg-brand-light border border-slate-200 flex items-center justify-center">
+              <span className="text-brand-black text-xs font-semibold">
                 {usuario.nombre?.charAt(0).toUpperCase() ?? 'U'}
               </span>
             </div>
@@ -166,12 +169,12 @@ export default function SelectModulePage() {
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10">
         <div className="max-w-5xl w-full">
           <div className="text-center mb-10">
-            <p className="text-slate-500 text-sm mb-1 uppercase tracking-widest font-medium">Bienvenido</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
-              Selecciona un modulo
+            <p className="text-brand-red text-sm mb-1 uppercase tracking-widest font-bold">Bienvenido</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-brand-black mb-3">
+              Selecciona un módulo
             </h1>
-            <p className="text-slate-400 text-base">
-              Hola <span className="text-white font-medium">{usuario.nombre}</span>, selecciona el area de trabajo
+            <p className="text-brand-gray text-base">
+              Hola <span className="text-brand-black font-medium">{usuario.nombre}</span>, selecciona el área de trabajo
             </p>
           </div>
 
@@ -188,37 +191,38 @@ export default function SelectModulePage() {
                   onMouseLeave={() => setHovering(null)}
                   disabled={!!selecting}
                   className={[
-                    'group relative flex flex-col items-center text-center rounded-2xl border bg-slate-900/80',
+                    'group relative flex flex-col items-center text-center rounded-2xl border bg-white',
                     'p-7 transition-all duration-300 cursor-pointer outline-none ring-2 ring-transparent',
-                    mod.borderColor, mod.ringHover, mod.shadowColor,
-                    isHov ? 'shadow-2xl -translate-y-2' : 'shadow-none translate-y-0',
+                    mod.borderColor, mod.borderColorHover, mod.ringHover, mod.shadowColor,
+                    isHov ? 'shadow-xl -translate-y-1.5' : 'shadow-sm translate-y-0',
                     isSel ? 'scale-95 opacity-60' : 'scale-100 opacity-100',
                   ].join(' ')}
                 >
-                  <div className={'absolute inset-0 rounded-2xl bg-gradient-to-br ' + mod.gradient + ' opacity-0 group-hover:opacity-5 transition-opacity duration-300'} />
+                  <div className={'absolute inset-0 rounded-2xl bg-gradient-to-br ' + mod.gradient + ' opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300'} />
 
                   <div className={[
                     'relative w-28 h-28 rounded-full flex items-center justify-center mb-5',
-                    mod.bgIcon, 'border', mod.borderColor,
-                    'transition-transform duration-300',
-                    isHov ? 'scale-110' : 'scale-100',
+                    mod.bgIcon, 'border', mod.borderColor, mod.borderColorHover,
+                    'transition-all duration-300',
+                    isHov ? 'scale-110 shadow-sm' : 'scale-100',
                   ].join(' ')}>
-                    <div className={'absolute inset-0 rounded-full bg-gradient-to-br ' + mod.gradient + ' opacity-0 group-hover:opacity-20 transition-opacity duration-300'} />
+                    <div className={'absolute inset-0 rounded-full bg-gradient-to-br ' + mod.gradient + ' opacity-0 group-hover:opacity-10 transition-opacity duration-300'} />
                     <div className={'relative ' + mod.textColor}>
                       <Icon />
                     </div>
                   </div>
 
-                  <h2 className={'text-xl font-bold mb-1.5 ' + mod.textColor}>{mod.label}</h2>
-                  <p className="text-slate-400 text-sm mb-4 leading-relaxed px-2">{mod.description}</p>
+                  <h2 className={'text-xl font-extrabold mb-1.5 ' + mod.textColor}>{mod.label}</h2>
+                  <p className="text-brand-gray text-sm mb-4 leading-relaxed px-2">{mod.description}</p>
 
                   <div className="flex flex-wrap gap-1.5 justify-center mb-5">
                     {mod.subItems.map(item => (
                       <span
                         key={item}
                         className={[
-                          'text-xs px-2.5 py-0.5 rounded-full',
-                          mod.bgIcon, mod.textColor, 'border', mod.borderColor,
+                          'text-xs px-2.5 py-0.5 rounded-full font-medium transition-colors',
+                          'bg-slate-50 text-slate-500 border border-slate-200',
+                          'group-hover:border-brand-red/20 group-hover:bg-brand-red/5 group-hover:text-brand-red',
                         ].join(' ')}
                       >
                         {item}
@@ -227,14 +231,14 @@ export default function SelectModulePage() {
                   </div>
 
                   <div className={[
-                    'w-full py-2.5 rounded-xl text-white text-sm font-semibold',
+                    'w-full py-2.5 rounded-xl text-white text-sm font-bold',
                     'bg-gradient-to-r', mod.gradient,
                     'transition-all duration-300',
-                    isHov ? 'shadow-lg opacity-100' : 'opacity-75',
+                    isHov ? 'shadow-md opacity-100' : 'opacity-90',
                   ].join(' ')}>
                     {isSel ? (
                       <span className="flex items-center justify-center gap-2">
-                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
@@ -249,8 +253,8 @@ export default function SelectModulePage() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-800/60 py-3 text-center">
-        <p className="text-slate-700 text-xs">CIS Nicaragua - Sistema de Gestion Minera 2026</p>
+      <footer className="border-t border-slate-200 py-4 text-center bg-white">
+        <p className="text-brand-gray/60 text-xs">© 2026 CIS Nicaragua - Sistema de Gestión Minera</p>
       </footer>
     </div>
   )

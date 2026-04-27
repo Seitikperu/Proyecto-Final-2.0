@@ -6,7 +6,19 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   darkMode: 'class',
-  theme: { extend: {} },
+  theme: { 
+    extend: {
+      colors: {
+        brand: {
+          red: '#C83232', // Rojo corporativo según la imagen
+          black: '#0a0a0a', // Negro corporativo
+          gray: '#808080', // Gris corporativo
+          light: '#f4f4f5', // Gris claro para fondos
+          white: '#ffffff', // Blanco
+        }
+      }
+    } 
+  },
   plugins: [],
 }
 export default config

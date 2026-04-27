@@ -7,10 +7,10 @@ const sb = getSupabaseClient()
 
 // Iconos y colores por tipo de proyecto
 const ESTILO: Record<string, { icono: string; color: string; colorBg: string }> = {
-  'Mina Jabalí':     { icono: '⛏️', color: 'text-blue-400',   colorBg: 'bg-blue-500/10 border-blue-500/30' },
-  'Mina Bellavista': { icono: '🏔️', color: 'text-emerald-400',colorBg: 'bg-emerald-500/10 border-emerald-500/30' },
-  'Managua':         { icono: '🏢', color: 'text-violet-400', colorBg: 'bg-viohlet-500/10 border-violet-500/30' },
-  _default:          { icono: '📁', color: 'text-slate-400',  colorBg: 'bg-slate-500/10 border-slate-500/30' },
+  'Mina Jabalí':     { icono: '⛏️', color: 'text-brand-red',   colorBg: 'bg-brand-red/5 border-brand-red/30' },
+  'Mina Bellavista': { icono: '🏔️', color: 'text-brand-black',colorBg: 'bg-brand-gray/5 border-brand-black/30' },
+  'Managua':         { icono: '🏢', color: 'text-brand-gray', colorBg: 'bg-brand-gray/10 border-brand-gray/30' },
+  _default:          { icono: '📁', color: 'text-brand-gray',  colorBg: 'bg-brand-gray/5 border-brand-gray/20' },
 }
 
 function estilo(nombre: string) {
@@ -112,9 +112,9 @@ export default function SelectProjectPage() {
 
   // ── LOADING ────────────────────────────────────────────────────────────────
   if (cargando) return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-      <div className="flex items-center gap-3 text-slate-400">
-        <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+    <div className="min-h-screen bg-brand-light flex items-center justify-center">
+      <div className="flex items-center gap-3 text-brand-gray">
+        <svg className="w-5 h-5 animate-spin text-brand-red" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
         </svg>
@@ -139,26 +139,26 @@ export default function SelectProjectPage() {
 
   // ── RENDER ─────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div className="min-h-screen bg-brand-light flex flex-col" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
 
       {/* Header */}
-      <header className="flex items-center justify-between px-8 py-5 border-b border-slate-800">
+      <header className="flex items-center justify-between px-8 py-5 border-b border-slate-200 bg-white">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-brand-red flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
             </svg>
           </div>
-          <span className="text-white font-semibold text-sm">CIS Nicaragua</span>
+          <span className="text-brand-black font-semibold text-sm">CIS Nicaragua</span>
         </div>
         <div className="flex items-center gap-3">
           {usuario && (
-            <span className="text-slate-400 text-sm">
-              Bienvenido, <span className="text-white font-medium">{usuario.nombre}</span>
+            <span className="text-brand-gray text-sm">
+              Bienvenido, <span className="text-brand-black font-medium">{usuario.nombre}</span>
             </span>
           )}
           <button onClick={cerrarSesion}
-            className="text-slate-500 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-slate-800"
+            className="text-brand-gray hover:text-brand-red transition-colors p-1.5 rounded-lg hover:bg-slate-100"
             title="Cerrar sesión">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -172,17 +172,17 @@ export default function SelectProjectPage() {
 
         {/* Título */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-400 uppercase tracking-widest bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-1.5 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"/>
+          <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-red uppercase tracking-widest bg-brand-red/10 border border-brand-red/20 rounded-full px-4 py-1.5 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-red animate-pulse"/>
             Sistema de Gestión de Almacén
           </div>
-          <h1 className="text-3xl font-extrabold text-white mb-3">Selecciona tu Proyecto</h1>
-          <p className="text-slate-400 text-base max-w-md">
+          <h1 className="text-3xl font-extrabold text-brand-black mb-3">Selecciona tu Proyecto</h1>
+          <p className="text-brand-gray text-base max-w-md">
             Elige la unidad operativa para acceder a sus datos de inventario, ingresos y salidas.
           </p>
           {proyectos.length > 0 && (
-            <p className="text-slate-500 text-xs mt-2">
-              Tienes acceso a <span className="text-slate-300 font-medium">{proyectos.length}</span> proyecto{proyectos.length > 1 ? 's' : ''}
+            <p className="text-brand-gray/80 text-xs mt-2">
+              Tienes acceso a <span className="text-brand-black font-medium">{proyectos.length}</span> proyecto{proyectos.length > 1 ? 's' : ''}
             </p>
           )}
         </div>
@@ -218,17 +218,17 @@ export default function SelectProjectPage() {
                 onMouseLeave={() => setHovering(null)}
                 disabled={!!selecting}
                 className={`relative group text-left rounded-2xl border p-6 transition-all duration-300 overflow-hidden cursor-pointer
-                  ${isSelected ? `${e.colorBg} scale-95 shadow-2xl` :
-                    isHover   ? `${e.colorBg} scale-[1.02] shadow-xl` :
-                    'bg-slate-900 border-slate-800 hover:scale-[1.02]'}`}>
+                  ${isSelected ? `${e.colorBg} scale-95 shadow-xl` :
+                    isHover   ? `${e.colorBg} scale-[1.02] shadow-lg` :
+                    'bg-white border-slate-200 hover:scale-[1.02]'}`}>
 
                 {/* Shimmer */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent
+                <div className={`absolute inset-0 bg-gradient-to-br from-black/5 via-transparent to-transparent
                   transition-opacity duration-300 ${isHover || isSelected ? 'opacity-100' : 'opacity-0'}`}/>
 
                 {/* Check de selección */}
                 {isSelected && (
-                  <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-brand-red flex items-center justify-center">
                     <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7"/>
                     </svg>
@@ -236,10 +236,10 @@ export default function SelectProjectPage() {
                 )}
 
                 {/* Icono */}
-                <div className={`w-14 h-14 rounded-xl bg-slate-800 flex items-center justify-center text-2xl mb-4
-                  ${isHover || isSelected ? 'bg-slate-700' : ''} transition-colors`}>
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl mb-4
+                  ${isHover || isSelected ? 'bg-slate-100' : 'bg-slate-50'} transition-colors`}>
                   {isSelected
-                    ? <svg className="w-6 h-6 text-green-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                    ? <svg className="w-6 h-6 text-brand-red animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                       </svg>
@@ -248,10 +248,10 @@ export default function SelectProjectPage() {
                 </div>
 
                 {/* Texto */}
-                <h2 className={`text-lg font-bold mb-1 transition-colors ${isHover || isSelected ? e.color : 'text-white'}`}>
+                <h2 className={`text-lg font-bold mb-1 transition-colors ${isHover || isSelected ? e.color : 'text-brand-black'}`}>
                   {p.nombre}
                 </h2>
-                <p className="text-slate-400 text-sm leading-relaxed">{p.descripcion}</p>
+                <p className="text-brand-gray text-sm leading-relaxed">{p.descripcion}</p>
                 {p.ubicacion && (
                   <p className="text-slate-600 text-xs mt-1">📍 {p.ubicacion}{p.pais ? `, ${p.pais}` : ''}</p>
                 )}
@@ -259,10 +259,10 @@ export default function SelectProjectPage() {
                 {/* Badge tipo */}
                 <div className="mt-4 flex items-center gap-2">
                   {p.tipo && (
-                    <span className="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">{p.tipo}</span>
+                    <span className="text-xs bg-slate-100 text-brand-gray px-2 py-0.5 rounded font-mono">{p.tipo}</span>
                   )}
-                  <span className="flex items-center gap-1 text-xs text-green-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"/>
+                  <span className="flex items-center gap-1 text-xs text-brand-red">
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-red animate-pulse"/>
                     Activo
                   </span>
                 </div>
@@ -279,11 +279,11 @@ export default function SelectProjectPage() {
         </div>
 
         {/* Nota */}
-        <div className="mt-10 flex items-start gap-2.5 bg-slate-900 border border-slate-800 rounded-xl px-5 py-3 max-w-xl w-full">
-          <svg className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="mt-10 flex items-start gap-2.5 bg-white border border-slate-200 rounded-xl px-5 py-3 max-w-xl w-full">
+          <svg className="w-4 h-4 text-brand-red flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <p className="text-slate-400 text-xs leading-relaxed">
+          <p className="text-brand-gray text-xs leading-relaxed">
             Los datos del dashboard se filtran automáticamente según el proyecto seleccionado.
             Puedes cambiar de proyecto desde el menú lateral en cualquier momento.
           </p>
@@ -292,7 +292,7 @@ export default function SelectProjectPage() {
 
       {/* Footer */}
       <footer className="py-4 text-center">
-        <p className="text-slate-700 text-xs">© 2025 CIS Nicaragua · v2.0</p>
+        <p className="text-brand-gray/60 text-xs">© 2026 CIS Nicaragua · v2.0</p>
       </footer>
     </div>
   )

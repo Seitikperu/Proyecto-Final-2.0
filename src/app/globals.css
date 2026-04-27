@@ -6,8 +6,12 @@
   * { box-sizing: border-box; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+  body {
+    background-color: #f4f4f5; /* brand-light */
+    color: #0a0a0a; /* brand-black */
+  }
 }
 @layer utilities {
   .line-clamp-2 {

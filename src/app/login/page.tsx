@@ -62,15 +62,15 @@ function LoginForm() {
     <main className="min-h-screen flex items-stretch font-sans">
       {/* Panel izquierdo — imagen */}
       <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden">
-        <div className="absolute left-0 top-0 bottom-0 w-3 bg-blue-900 z-10" />
-        <div className="absolute left-5 top-0 bottom-0 w-1.5 bg-blue-700/60 z-10" />
-        <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-blue-500/40 z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-3 bg-brand-red z-10" />
+        <div className="absolute left-5 top-0 bottom-0 w-1.5 bg-brand-red/60 z-10" />
+        <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-brand-red/40 z-10" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/warehouse-bg.png" alt="Almacen Unidad Minera Jabali" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/90 via-brand-black/50 to-transparent" />
         <div className="absolute bottom-10 left-12 z-10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center shadow-lg">
               <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
@@ -89,32 +89,32 @@ function LoginForm() {
       </div>
 
       {/* Panel derecho — formulario */}
-      <div className="flex-1 flex items-center justify-center bg-slate-950 px-8 py-12">
+      <div className="flex-1 flex items-center justify-center bg-white px-8 py-12">
         <div className="w-full max-w-sm">
           {/* Logo mobile */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 mb-3 shadow-lg shadow-blue-600/30">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-red mb-3 shadow-lg shadow-brand-red/30">
               <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
             </div>
-            <h1 className="text-xl font-bold text-white">CIS Nicaragua</h1>
+            <h1 className="text-xl font-bold text-brand-black">CIS Nicaragua</h1>
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-extrabold text-white tracking-tight">Iniciar sesión</h1>
-            <p className="text-slate-400 text-sm mt-1">Ingresa tus credenciales para continuar</p>
+            <h1 className="text-2xl font-extrabold text-brand-black tracking-tight">Iniciar sesión</h1>
+            <p className="text-brand-gray text-sm mt-1">Ingresa tus credenciales para continuar</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5" noValidate>
             {/* Campo email */}
             <div>
-              <label htmlFor="email" className="block text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2">
+              <label htmlFor="email" className="block text-xs font-bold text-brand-gray uppercase tracking-widest mb-2">
                 Correo electrónico
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-brand-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                   </svg>
                 </div>
@@ -127,19 +127,19 @@ function LoginForm() {
                   autoComplete="email"
                   placeholder="tu@correo.com"
                   disabled={isPending}
-                  className="w-full bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50"
+                  className="w-full bg-brand-light border border-slate-200 text-brand-black placeholder-brand-gray/60 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red transition-all disabled:opacity-50"
                 />
               </div>
             </div>
 
             {/* Campo contraseña */}
             <div>
-              <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-widest mb-2">
+              <label htmlFor="password" className="block text-xs font-bold text-brand-gray uppercase tracking-widest mb-2">
                 Contraseña
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-brand-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -152,12 +152,12 @@ function LoginForm() {
                   autoComplete="current-password"
                   placeholder="••••••••"
                   disabled={isPending}
-                  className="w-full bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:opacity-50"
+                  className="w-full bg-brand-light border border-slate-200 text-brand-black placeholder-brand-gray/60 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-brand-red transition-all disabled:opacity-50"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd(v => !v)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-brand-gray hover:text-brand-black transition-colors"
                 >
                   {showPwd ? (
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -187,7 +187,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isPending || !email || !password}
-              className="relative w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold py-3 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-blue-600/20 hover:shadow-blue-500/30 disabled:shadow-none overflow-hidden group"
+              className="relative w-full bg-brand-red hover:bg-red-700 active:bg-red-800 disabled:bg-slate-300 disabled:text-brand-gray text-white font-bold py-3 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30 disabled:shadow-none overflow-hidden group"
             >
               <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700" />
               <span className="relative flex items-center justify-center gap-2">
@@ -211,7 +211,7 @@ function LoginForm() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-slate-600 mt-8">
+          <p className="text-center text-xs text-brand-gray mt-8">
             © 2025 CIS Nicaragua - Unidad Minera Jabalí - v2.0
           </p>
         </div>
@@ -222,7 +222,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
+    <Suspense fallback={<div className="min-h-screen bg-brand-light" />}>
       <LoginForm />
     </Suspense>
   )
