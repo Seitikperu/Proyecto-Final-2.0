@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import type { IngresoAlmacen, SalidaAlmacen, Material, CentroCosto, AlmacenFilter, PaginationResult, Proveedor } from '@/types/database'
+import type { IngresoAlmacen, SalidaAlmacen, Material, CentroCosto, AlmacenFilter, PaginationResult, Proveedor, Personal, MaestroEquipo, MLAbor } from '@/types/database'
 
 const sb = getSupabaseClient()
 
@@ -135,21 +135,20 @@ export function useProveedores(busqueda = '', page = 1, pageSize = 50) {
   const [result, setResult] = useState<PaginationResult<Proveedor>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true)
-      let q = sb.from('proveedores').select('*', { count: 'exact' })
-        .order('proveedor').range((page - 1) * pageSize, page * pageSize - 1)
-      if (busqueda) q = q.or(`proveedor.ilike.%${busqueda}%,ruc_di.ilike.%${busqueda}%,ciudad.ilike.%${busqueda}%`)
-      const { data, count, error } = await q
-      if (error) { console.error('Error listando proveedores:', error.message) }
-      setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
-      setLoading(false)
-    }
-    fetchData()
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('proveedores').select('*', { count: 'exact' })
+      .order('proveedor').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`proveedor.ilike.%${busqueda}%,ruc_di.ilike.%${busqueda}%,ciudad.ilike.%${busqueda}%`)
+    const { data, count, error } = await q
+    if (error) { console.error('Error listando proveedores:', error.message) }
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
   }, [busqueda, page, pageSize])
 
-  return { ...result, loading }
+  useEffect(() => { fetchData() }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
 }
 
 export function useCentrosCosto(soloAlmacen = false) {
@@ -168,6 +167,86 @@ export function useCentrosCosto(soloAlmacen = false) {
   }, [soloAlmacen])
 
   return { data, loading }
+}
+
+export function useCecosPaginado(busqueda = '', page = 1, pageSize = 20) {
+  const [result, setResult] = useState<PaginationResult<CentroCosto>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
+  const [loading, setLoading] = useState(true)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('centros_costo').select('*', { count: 'exact' })
+      .order('cod_ceco').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`cod_ceco.ilike.%${busqueda}%,centro_costo.ilike.%${busqueda}%,area.ilike.%${busqueda}%`)
+    const { data, count, error } = await q
+    if (error) { console.error('Error listando cecos:', error.message) }
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
+  }, [busqueda, page, pageSize])
+
+  useEffect(() => { fetchData() }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
+}
+
+export function usePersonal(busqueda = '', page = 1, pageSize = 20) {
+  const [result, setResult] = useState<PaginationResult<Personal>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
+  const [loading, setLoading] = useState(true)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('personal').select('*', { count: 'exact' })
+      .order('trabajador').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`trabajador.ilike.%${busqueda}%,codigo.ilike.%${busqueda}%,ocupacion.ilike.%${busqueda}%`)
+    const { data, count, error } = await q
+    if (error) { console.error('Error listando personal:', error.message) }
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
+  }, [busqueda, page, pageSize])
+
+  useEffect(() => { fetchData() }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
+}
+
+export function useEquipos(busqueda = '', page = 1, pageSize = 20) {
+  const [result, setResult] = useState<PaginationResult<MaestroEquipo>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
+  const [loading, setLoading] = useState(true)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('maestro_equipos').select('*', { count: 'exact' })
+      .order('titulo').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`titulo.ilike.%${busqueda}%,codigo_cis.ilike.%${busqueda}%,modelo.ilike.%${busqueda}%`)
+    const { data, count, error } = await q
+    if (error) { console.error('Error listando equipos:', error.message) }
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
+  }, [busqueda, page, pageSize])
+
+  useEffect(() => { fetchData() }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
+}
+
+export function useLabores(busqueda = '', page = 1, pageSize = 20) {
+  const [result, setResult] = useState<PaginationResult<MLAbor>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
+  const [loading, setLoading] = useState(true)
+
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('mlabor').select('*', { count: 'exact' })
+      .order('titulo').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`titulo.ilike.%${busqueda}%,mina.ilike.%${busqueda}%,veta.ilike.%${busqueda}%`)
+    const { data, count, error } = await q
+    if (error) { console.error('Error listando labores:', error.message) }
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
+  }, [busqueda, page, pageSize])
+
+  useEffect(() => { fetchData() }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
 }
 
 // ── STOCK EN TIEMPO REAL ──────────────────────────────────────────────────────────────────────────────
