@@ -40,25 +40,24 @@ export default function ModalMaterial({ onClose, onSaved }: ModalMaterialProps) 
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const [rawData, setRawData] = useState<any[]>([])
+
   const [listas, setListas] = useState({
     familias: [] as string[],
-    subfamilias: [] as string[],
-    descripciones: [] as string[],
     unidades: UNIDADES_DEFAULT,
     numerosParte: [] as string[],
     modelos: [] as string[]
   })
 
-  // Cargar listas únicas para los autocompletados
+  // Cargar todos los datos una vez
   useEffect(() => {
     async function fetchListas() {
       const sb = getSupabaseClient()
       const { data } = await sb.from('materiales').select('familia, subfamilia, descripcion, unidad_medida, numero_parte, marca_equipo')
       if (data) {
+        setRawData(data)
         setListas({
           familias: Array.from(new Set(data.map(d => d.familia).filter(Boolean))) as string[],
-          subfamilias: Array.from(new Set(data.map(d => d.subfamilia).filter(Boolean))) as string[],
-          descripciones: Array.from(new Set(data.map(d => d.descripcion).filter(Boolean))) as string[],
           unidades: Array.from(new Set([...UNIDADES_DEFAULT, ...data.map(d => d.unidad_medida).filter(Boolean)])) as string[],
           numerosParte: Array.from(new Set(data.map(d => d.numero_parte).filter(Boolean))) as string[],
           modelos: Array.from(new Set(data.map(d => d.marca_equipo).filter(Boolean))) as string[],
@@ -67,6 +66,20 @@ export default function ModalMaterial({ onClose, onSaved }: ModalMaterialProps) 
     }
     fetchListas()
   }, [])
+
+  // Listas filtradas en cascada (dependientes)
+  const subfamiliasFiltradas = useMemo(() => {
+    if (!form.familia) return Array.from(new Set(rawData.map(d => d.subfamilia).filter(Boolean))) as string[]
+    return Array.from(new Set(rawData.filter(d => d.familia === form.familia).map(d => d.subfamilia).filter(Boolean))) as string[]
+  }, [rawData, form.familia])
+
+  const descripcionesFiltradas = useMemo(() => {
+    let filtered = rawData
+    if (form.familia) filtered = filtered.filter(d => d.familia === form.familia)
+    if (form.subfamilia) filtered = filtered.filter(d => d.subfamilia === form.subfamilia)
+    
+    return Array.from(new Set(filtered.map(d => d.descripcion).filter(Boolean))) as string[]
+  }, [rawData, form.familia, form.subfamilia])
 
   // Validaciones
   const esValido = form.familia.trim() && form.subfamilia.trim() && form.descripcion.trim() && form.unidad_medida.trim()
@@ -176,7 +189,7 @@ export default function ModalMaterial({ onClose, onSaved }: ModalMaterialProps) 
                   <input type="text" list="subfamilias-list" value={form.subfamilia} onChange={e => setForm({...form, subfamilia: e.target.value.toUpperCase()})}
                     className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
                   <datalist id="subfamilias-list">
-                    {listas.subfamilias.map(sf => <option key={sf} value={sf} />)}
+                    {subfamiliasFiltradas.map(sf => <option key={sf} value={sf} />)}
                   </datalist>
                 </div>
               </div>
@@ -188,7 +201,7 @@ export default function ModalMaterial({ onClose, onSaved }: ModalMaterialProps) 
                   <input type="text" list="descripciones-list" value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value.toUpperCase()})}
                     className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
                   <datalist id="descripciones-list">
-                    {listas.descripciones.map(d => <option key={d} value={d} />)}
+                    {descripcionesFiltradas.map(d => <option key={d} value={d} />)}
                   </datalist>
                 </div>
               </div>
