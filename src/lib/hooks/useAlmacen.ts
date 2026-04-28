@@ -115,20 +115,21 @@ export function useMateriales(busqueda = '', page = 1, pageSize = 20) {
   const [result, setResult] = useState<PaginationResult<Material>>({ data: [], count: 0, page, pageSize, totalPages: 0 })
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true)
-      let q = sb.from('materiales').select('*', { count: 'exact' })
-        .order('codigo').range((page - 1) * pageSize, page * pageSize - 1)
-      if (busqueda) q = q.or(`descripcion.ilike.%${busqueda}%,codigo.ilike.%${busqueda}%`)
-      const { data, count } = await q
-      setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
-      setLoading(false)
-    }
-    fetchData()
+  const fetchData = useCallback(async () => {
+    setLoading(true)
+    let q = sb.from('materiales').select('*', { count: 'exact' })
+      .order('codigo').range((page - 1) * pageSize, page * pageSize - 1)
+    if (busqueda) q = q.or(`descripcion.ilike.%${busqueda}%,codigo.ilike.%${busqueda}%`)
+    const { data, count } = await q
+    setResult({ data: data ?? [], count: count ?? 0, page, pageSize, totalPages: Math.ceil((count ?? 0) / pageSize) })
+    setLoading(false)
   }, [busqueda, page, pageSize])
 
-  return { ...result, loading }
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  return { ...result, loading, refetch: fetchData }
 }
 
 export function useProveedores(busqueda = '', page = 1, pageSize = 50) {

@@ -32,7 +32,7 @@ const NAV = [
     { label: 'CeCos',       href: '/dashboard/maestros/cecos' },
     { label: 'Personal',    href: '/dashboard/maestros/personal' },
     { label: 'Equipos',     href: '/dashboard/maestros/equipos' },
-    { label: 'Materiales', href: '/dashboard/almacen/materiales' },
+    { label: 'Materiales',  href: '/dashboard/maestros/materiales' },
     { label: 'Labores',     href: '/dashboard/maestros/labores' },
   ]},
 ]

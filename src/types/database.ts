@@ -92,17 +92,30 @@ export interface CentroCosto {
 export interface Material {
   id: number
   codigo: string
+  cod2: string | null
   descripcion: string | null
   unidad_medida: string | null
   familia: string | null
+  cod_familia: string | null
   subfamilia: string | null
+  cod_subfamilia: string | null
+  cod_abcd: string | null
+  cod_descripcion: string | null
   ubicacion_jabali: string | null
   ubicacion_managua: string | null
-  cod_abcd: string | null
   activo: string
   vida_util: number | null
   marca_equipo: string | null
+  numero_parte: string | null
+  largo_codigo: string | null
+  stock_minimo: number | null
+  tipo_atencion: string | null
+  ceco_valor_ganado: string | null
+  proyecto_nombre: string | null
+  creado_por: string | null
+  modificado_por: string | null
   creado_en: string
+  modificado_en: string | null
 }
 
 export interface Personal {
