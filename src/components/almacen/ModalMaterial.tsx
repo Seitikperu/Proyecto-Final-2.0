@@ -7,8 +7,6 @@ import type { Material } from '@/types/database'
 interface ModalMaterialProps {
   onClose: () => void
   onSaved: () => void
-  familiasExistentes: string[]
-  unidadesExistentes: string[]
 }
 
 interface PreviewResult {
@@ -24,10 +22,9 @@ interface PreviewResult {
   }[]
 }
 
-// Unidades más comunes por defecto
 const UNIDADES_DEFAULT = ['UND', 'PZA', 'M', 'KG', 'L', 'GL', 'CJ', 'BL', 'PAR', 'JGO']
 
-export default function ModalMaterial({ onClose, onSaved, familiasExistentes, unidadesExistentes }: ModalMaterialProps) {
+export default function ModalMaterial({ onClose, onSaved }: ModalMaterialProps) {
   const [form, setForm] = useState({
     familia: '',
     subfamilia: '',
@@ -42,12 +39,34 @@ export default function ModalMaterial({ onClose, onSaved, familiasExistentes, un
   const [cargandoPreview, setCargandoPreview] = useState(false)
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
-  // Opciones combinadas de unidades
-  const unidadesOpciones = useMemo(() => {
-    const un = new Set([...UNIDADES_DEFAULT, ...unidadesExistentes])
-    return Array.from(un).filter(Boolean).sort()
-  }, [unidadesExistentes])
+
+  const [listas, setListas] = useState({
+    familias: [] as string[],
+    subfamilias: [] as string[],
+    descripciones: [] as string[],
+    unidades: UNIDADES_DEFAULT,
+    numerosParte: [] as string[],
+    modelos: [] as string[]
+  })
+
+  // Cargar listas únicas para los autocompletados
+  useEffect(() => {
+    async function fetchListas() {
+      const sb = getSupabaseClient()
+      const { data } = await sb.from('materiales').select('familia, subfamilia, descripcion, unidad_medida, numero_parte, marca_equipo')
+      if (data) {
+        setListas({
+          familias: Array.from(new Set(data.map(d => d.familia).filter(Boolean))) as string[],
+          subfamilias: Array.from(new Set(data.map(d => d.subfamilia).filter(Boolean))) as string[],
+          descripciones: Array.from(new Set(data.map(d => d.descripcion).filter(Boolean))) as string[],
+          unidades: Array.from(new Set([...UNIDADES_DEFAULT, ...data.map(d => d.unidad_medida).filter(Boolean)])) as string[],
+          numerosParte: Array.from(new Set(data.map(d => d.numero_parte).filter(Boolean))) as string[],
+          modelos: Array.from(new Set(data.map(d => d.marca_equipo).filter(Boolean))) as string[],
+        })
+      }
+    }
+    fetchListas()
+  }, [])
 
   // Validaciones
   const esValido = form.familia.trim() && form.subfamilia.trim() && form.descripcion.trim() && form.unidad_medida.trim()
@@ -121,89 +140,101 @@ export default function ModalMaterial({ onClose, onSaved, familiasExistentes, un
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#e4e9f2] border border-slate-300 rounded-lg w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-sans">
+      <div className="bg-brand-light border border-slate-300 rounded-2xl w-full max-w-6xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-sans">
         
-        {/* Encabezado Azul Oscuro */}
-        <div className="bg-[#1e235a] text-white text-center py-4 px-6 shadow-md relative">
-          <h2 className="text-2xl font-bold tracking-wide">CREACION DE CODIGOS DE MATERIALES</h2>
-          <button onClick={onClose} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2">
+        {/* Encabezado Light Mode */}
+        <div className="bg-brand-black text-white text-center py-4 px-6 relative">
+          <h2 className="text-xl font-bold tracking-wide">Creación de Código de Material</h2>
+          <button onClick={onClose} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
         {/* Cuerpo Dividido en 2 Columnas */}
-        <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
+        <div className="flex flex-col md:flex-row flex-1 overflow-hidden bg-white">
           
           {/* Lado Izquierdo: Formulario */}
-          <div className="md:w-1/2 p-8 border-r border-slate-300/50 overflow-y-auto relative">
-            <div className="space-y-6">
+          <div className="md:w-1/2 p-8 border-r border-slate-200 overflow-y-auto relative">
+            <div className="space-y-5">
               
               {/* Familia */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">FAMILIA</label>
-                <div className="flex-1">
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Familia</label>
+                <div className="flex-1 relative">
                   <input type="text" list="familias-list" value={form.familia} onChange={e => setForm({...form, familia: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
                   <datalist id="familias-list">
-                    {familiasExistentes.map(f => <option key={f} value={f} />)}
+                    {listas.familias.map(f => <option key={f} value={f} />)}
                   </datalist>
                 </div>
               </div>
 
               {/* Sub Familia */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">SUB FAMILIA</label>
-                <div className="flex-1">
-                  <input type="text" value={form.subfamilia} onChange={e => setForm({...form, subfamilia: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Sub Familia</label>
+                <div className="flex-1 relative">
+                  <input type="text" list="subfamilias-list" value={form.subfamilia} onChange={e => setForm({...form, subfamilia: e.target.value.toUpperCase()})}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
+                  <datalist id="subfamilias-list">
+                    {listas.subfamilias.map(sf => <option key={sf} value={sf} />)}
+                  </datalist>
                 </div>
               </div>
 
               {/* Descripcion */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">DESCRIPCION</label>
-                <div className="flex-1">
-                  <input type="text" value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Descripción</label>
+                <div className="flex-1 relative">
+                  <input type="text" list="descripciones-list" value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value.toUpperCase()})}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
+                  <datalist id="descripciones-list">
+                    {listas.descripciones.map(d => <option key={d} value={d} />)}
+                  </datalist>
                 </div>
               </div>
 
               {/* Unidad */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">UNIDAD</label>
-                <div className="flex-1">
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Unidad</label>
+                <div className="flex-1 relative">
                   <input type="text" list="unidades-list" value={form.unidad_medida} onChange={e => setForm({...form, unidad_medida: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
                   <datalist id="unidades-list">
-                    {unidadesOpciones.map(u => <option key={u} value={u} />)}
+                    {listas.unidades.map(u => <option key={u} value={u} />)}
                   </datalist>
                 </div>
               </div>
 
               {/* N Parte */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">N° PARTE</label>
-                <div className="flex-1">
-                  <input type="text" value={form.numero_parte} onChange={e => setForm({...form, numero_parte: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">N° Parte</label>
+                <div className="flex-1 relative">
+                  <input type="text" list="numeros-parte-list" value={form.numero_parte} onChange={e => setForm({...form, numero_parte: e.target.value.toUpperCase()})}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
+                  <datalist id="numeros-parte-list">
+                    {listas.numerosParte.map(n => <option key={n} value={n} />)}
+                  </datalist>
                 </div>
               </div>
 
               {/* Modelo */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">MODELO</label>
-                <div className="flex-1">
-                  <input type="text" value={form.marca_equipo} onChange={e => setForm({...form, marca_equipo: e.target.value.toUpperCase()})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black"/>
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Modelo</label>
+                <div className="flex-1 relative">
+                  <input type="text" list="modelos-list" value={form.marca_equipo} onChange={e => setForm({...form, marca_equipo: e.target.value.toUpperCase()})}
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white"/>
+                  <datalist id="modelos-list">
+                    {listas.modelos.map(m => <option key={m} value={m} />)}
+                  </datalist>
                 </div>
               </div>
 
               {/* Activo */}
               <div className="flex items-center gap-4">
-                <label className="w-32 font-bold text-sm text-[#1e235a]">ACTIVO</label>
-                <div className="flex-1">
+                <label className="w-32 font-bold text-xs text-brand-gray tracking-wider uppercase">Activo</label>
+                <div className="flex-1 relative">
                   <select value={form.activo} onChange={e => setForm({...form, activo: e.target.value})}
-                    className="w-full border-2 border-[#1e235a] rounded px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#1e235a]/50 text-sm font-semibold text-brand-black bg-white">
+                    className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red/50 text-sm font-semibold text-brand-black transition-all bg-slate-50 hover:bg-white cursor-pointer">
                     <option value="SI">SI</option>
                     <option value="NO">NO</option>
                   </select>
@@ -213,32 +244,33 @@ export default function ModalMaterial({ onClose, onSaved, familiasExistentes, un
             </div>
 
             {error && (
-              <div className="mt-6 p-4 bg-red-100 border-l-4 border-red-600 text-red-800 text-sm font-bold">
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium flex items-center gap-3">
+                <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 {error}
               </div>
             )}
             {!error && esValido && (
-              <div className="mt-8">
-                <span className="text-red-600 font-bold text-sm">OK</span>
+              <div className="mt-8 flex items-center gap-2 text-green-600 font-bold text-sm">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+                Campos requeridos completados
               </div>
             )}
             
-            {/* Decoración visual lateral que se veía en la imagen (barra azul a la izquierda) */}
-            <div className="absolute left-0 top-0 bottom-0 w-3 bg-[#4c63b6] opacity-50 pointer-events-none"></div>
+            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-red opacity-80 pointer-events-none"></div>
           </div>
 
           {/* Lado Derecho: Preview */}
-          <div className="md:w-1/2 p-8 bg-white flex flex-col">
+          <div className="md:w-1/2 p-8 bg-slate-50/50 flex flex-col">
             
             {/* Cuadro de Código Generado */}
-            <div className="bg-[#1e235a] text-center p-6 rounded mb-8 shadow-md">
-              <h3 className="text-white font-bold text-lg mb-2">CODIGO DE NUEVO MATERIAL</h3>
+            <div className="bg-brand-black text-center p-6 rounded-xl mb-8 shadow-md border border-slate-800">
+              <h3 className="text-white/80 font-semibold text-sm mb-2 uppercase tracking-widest">Código Propuesto</h3>
               {cargandoPreview ? (
-                <div className="h-8 flex items-center justify-center">
-                  <span className="text-white/60 animate-pulse font-bold">Calculando...</span>
+                <div className="h-10 flex items-center justify-center">
+                  <span className="text-white/60 animate-pulse font-medium">Calculando código...</span>
                 </div>
               ) : (
-                <div className="text-white font-extrabold text-3xl tracking-[0.2em]">
+                <div className="text-white font-extrabold text-4xl tracking-[0.2em]">
                   {preview?.codigo || '----------'}
                 </div>
               )}
@@ -246,40 +278,43 @@ export default function ModalMaterial({ onClose, onSaved, familiasExistentes, un
 
             {/* Tabla de Similares */}
             <div className="flex-1 flex flex-col">
-              <h4 className="text-[#1e235a] font-extrabold text-sm mb-2 uppercase leading-tight">
-                Lista de Materiales dentro de la Subfamilia y Grupo Alfabetico
+              <h4 className="text-brand-black font-extrabold text-sm mb-3 uppercase tracking-wide">
+                Materiales en Grupo (Subfamilia y Alfabeto)
               </h4>
-              <div className="border-2 border-[#1e235a] rounded flex-1 overflow-hidden flex flex-col">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-[#1e235a] text-white">
-                    <tr>
-                      <th className="px-3 py-2 font-semibold">COD2</th>
-                      <th className="px-3 py-2 font-semibold">NUEVA DESCRIPCION</th>
-                      <th className="px-3 py-2 font-semibold w-24">NEW UM</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                    {cargandoPreview ? (
-                       <tr>
-                         <td colSpan={3} className="p-8 text-center text-brand-gray font-medium">Buscando...</td>
-                       </tr>
-                    ) : preview?.similares && preview.similares.length > 0 ? (
-                      preview.similares.map((sim, idx) => (
-                        <tr key={idx} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                          <td className="px-3 py-2 text-brand-gray font-mono">{sim.cod2}</td>
-                          <td className="px-3 py-2 text-brand-black font-semibold text-xs">{sim.descripcion}</td>
-                          <td className="px-3 py-2 text-brand-gray text-xs">{sim.unidad_medida}</td>
-                        </tr>
-                      ))
-                    ) : (
+              <div className="border border-slate-200 rounded-xl flex-1 overflow-hidden flex flex-col bg-white shadow-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-brand-gray">
                       <tr>
-                        <td colSpan={3} className="p-8 text-center text-brand-gray font-medium">
-                          {form.familia && form.descripcion ? 'No se encontraron materiales en este grupo.' : 'Ingresa datos para previsualizar.'}
-                        </td>
+                        <th className="px-4 py-3 font-bold uppercase text-xs">Cód. Existente</th>
+                        <th className="px-4 py-3 font-bold uppercase text-xs">Descripción</th>
+                        <th className="px-4 py-3 font-bold uppercase text-xs w-24">UM</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {cargandoPreview ? (
+                         <tr>
+                           <td colSpan={3} className="p-8 text-center text-brand-gray font-medium">Buscando coincidencias...</td>
+                         </tr>
+                      ) : preview?.similares && preview.similares.length > 0 ? (
+                        preview.similares.map((sim, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                            <td className="px-4 py-2.5 text-brand-gray font-mono text-xs">{sim.cod2}</td>
+                            <td className="px-4 py-2.5 text-brand-black font-medium text-xs max-w-[200px] truncate" title={sim.descripcion}>{sim.descripcion}</td>
+                            <td className="px-4 py-2.5 text-brand-gray text-xs">{sim.unidad_medida}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={3} className="p-12 text-center text-brand-gray">
+                            <svg className="w-12 h-12 mx-auto text-slate-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                            {form.familia && form.descripcion ? 'No hay materiales en este grupo.' : 'Ingresa Familia, Subfamilia y Descripción para previsualizar.'}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
@@ -288,9 +323,17 @@ export default function ModalMaterial({ onClose, onSaved, familiasExistentes, un
               <button
                 onClick={guardar}
                 disabled={!esValido || guardando || cargandoPreview}
-                className="bg-[#1e235a] hover:bg-blue-900 active:scale-95 text-white font-bold text-lg px-8 py-4 rounded shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="bg-brand-red hover:bg-red-700 active:scale-95 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
               >
-                {guardando ? 'GUARDANDO...' : 'AGREGAR-MATERIAL'}
+                {guardando ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Guardando...
+                  </>
+                ) : 'Agregar Material'}
               </button>
             </div>
 

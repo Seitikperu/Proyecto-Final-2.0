@@ -195,8 +195,6 @@ export default function Page() {
             setShowModal(false)
             if (refetch) refetch()
           }}
-          familiasExistentes={familias}
-          unidadesExistentes={unidades}
         />
       )}
     </div>
