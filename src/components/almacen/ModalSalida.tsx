@@ -90,7 +90,7 @@ export default function ModalSalida({ onClose, onSaved }: Props) {
       .then(({ data }) => setAprobadores(data ?? []))
 
     // centros de costo
-    sb.from('centros_costo').select('id,cod_ceco,centro_costo,area').eq('filtro_almacen', 'SI').order('cod_ceco').limit(500)
+    sb.from('Centros_costo').select('id,cod_ceco,centro_costo,area').eq('filtro_almacen', 'SI').order('cod_ceco').limit(500)
       .then(({ data }) => setCentros((data ?? []) as CentroCosto[]))
   }, [])
 
