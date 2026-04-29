@@ -158,7 +158,7 @@ export function useCentrosCosto(soloAlmacen = false) {
 
   useEffect(() => {
     async function fetchData() {
-      let q = sb.from('Centros_costo').select('*').order('cod_ceco').limit(500)
+      let q = sb.from('centros_costo').select('*').order('cod_ceco').limit(500)
       if (soloAlmacen) q = q.eq('filtro_almacen', 'SI')
       const { data } = await q
       setData(data ?? [])
@@ -176,7 +176,7 @@ export function useCecosPaginado(busqueda = '', page = 1, pageSize = 20) {
 
   const fetchData = useCallback(async () => {
     setLoading(true)
-    let q = sb.from('Centros_costo').select('*', { count: 'exact' })
+    let q = sb.from('centros_costo').select('*', { count: 'exact' })
       .order('cod_ceco').range((page - 1) * pageSize, page * pageSize - 1)
     if (busqueda) q = q.or(`cod_ceco.ilike.%${busqueda}%,centro_costo.ilike.%${busqueda}%,area.ilike.%${busqueda}%`)
     const { data, count, error } = await q

@@ -36,7 +36,7 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
       try {
         const sb = getSupabaseClient()
         // Cargamos todos los centros de costo para las plantillas y cascadas
-        const { data, error } = await sb.from('Centros_costo').select('*').order('cod_ceco', { ascending: false })
+        const { data, error } = await sb.from('centros_costo').select('*').order('cod_ceco', { ascending: false })
         if (error) throw error
         if (data) {
           setRawData(data as CentroCosto[])
@@ -135,7 +135,7 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
         let nuevoCod = String(nuevoNum).padStart(12, '0')
 
         while (iteraciones < 200) {
-          const { data } = await sb.from('Centros_costo').select('id').eq('cod_ceco', nuevoCod).single()
+          const { data } = await sb.from('centros_costo').select('id').eq('cod_ceco', nuevoCod).single()
           if (!data) {
             setCodigoSugerido(nuevoCod)
             break
@@ -201,7 +201,7 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
         creado_en: new Date().toISOString()
       }
 
-      const { error: insErr } = await sb.from('Centros_costo').insert([nuevoRegistro])
+      const { error: insErr } = await sb.from('centros_costo').insert([nuevoRegistro])
       if (insErr) throw insErr
       
       onSaved()
