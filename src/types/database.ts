@@ -84,6 +84,16 @@ export interface CentroCosto {
   subfamilia: string | null
   unidad_produccion: string | null
   unidad_negocio: string | null
+  tipo_costo: string | null
+  proveedor: string | null
+  nv1: string | null
+  nv2: string | null
+  nv3: string | null
+  nv4: string | null
+  nv5: string | null
+  nv6: string | null
+  nv7: string | null
+  proyecto_nombre: string | null
   filtro_almacen: string | null
   corporativo: string | null
   creado_en: string
