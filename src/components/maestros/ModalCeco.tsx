@@ -215,15 +215,19 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-brand-light border border-slate-300 rounded-2xl w-full max-w-7xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-sans">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-7xl max-h-[95vh] flex flex-col shadow-2xl overflow-hidden font-sans">
         
         {/* Encabezado */}
-        <div className="bg-brand-black text-white text-center py-4 px-6 relative">
-          <h2 className="text-xl font-bold tracking-wide flex items-center justify-center gap-2">
-            <span className="text-brand-red">💰</span> Creación de Centro de Costo (CeCo)
-          </h2>
-          <button onClick={onClose} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10">
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-brand-red flex items-center justify-center text-sm text-white shadow-md shadow-brand-red/20">💰</div>
+            <div>
+              <h2 className="text-brand-black font-extrabold text-base">Creación de Centro de Costo (CeCo)</h2>
+              <p className="text-brand-gray text-xs font-medium">Crea un nuevo CeCo a partir de una plantilla</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="text-brand-gray hover:text-brand-black hover:bg-slate-200 rounded-lg p-2 transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
 
@@ -231,42 +235,42 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
         <div className="flex flex-col lg:flex-row flex-1 overflow-hidden bg-white">
           
           {/* Lado Izquierdo: Formulario */}
-          <div className="lg:w-2/5 p-8 border-r border-slate-200 overflow-y-auto relative flex flex-col gap-5">
+          <div className="lg:w-2/5 p-8 border-r border-slate-200 overflow-y-auto relative flex flex-col gap-5 bg-white">
             <p className="text-sm text-brand-gray mb-2 font-medium">1. Selecciona los niveles para filtrar las plantillas</p>
             
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Unidad de Producción</label>
                 <input type="text" list="up-list" value={form.unidad_produccion} onChange={e => handleChange('unidad_produccion', e.target.value)}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none transition-all"/>
                 <datalist id="up-list">{undsProduccion.map(v => <option key={v} value={v}/>)}</datalist>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Tipo de Costo</label>
                 <input type="text" list="tc-list" value={form.tipo_costo} onChange={e => handleChange('tipo_costo', e.target.value)}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none transition-all"/>
                 <datalist id="tc-list">{tiposCosto.map(v => <option key={v} value={v}/>)}</datalist>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Área</label>
                 <input type="text" list="area-list" value={form.area} onChange={e => handleChange('area', e.target.value)}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none transition-all"/>
                 <datalist id="area-list">{areas.map(v => <option key={v} value={v}/>)}</datalist>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Familia</label>
                 <input type="text" list="fam-list" value={form.familia} onChange={e => handleChange('familia', e.target.value)}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none transition-all"/>
                 <datalist id="fam-list">{familias.map(v => <option key={v} value={v}/>)}</datalist>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Sub Familia</label>
                 <input type="text" list="sf-list" value={form.subfamilia} onChange={e => handleChange('subfamilia', e.target.value)}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black bg-slate-50 focus:ring-2 focus:ring-brand-red/50 focus:outline-none transition-all"/>
                 <datalist id="sf-list">{subfamilias.map(v => <option key={v} value={v}/>)}</datalist>
               </div>
             </div>
@@ -280,21 +284,21 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
                 <input type="text" value={form.centro_costo} onChange={e => setForm({...form, centro_costo: e.target.value.toUpperCase()})}
                   disabled={!plantillaSeleccionada}
                   placeholder={!plantillaSeleccionada ? "Selecciona una plantilla primero..." : "Ej: MTTO JABALI"}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold text-brand-black focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100"/>
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold text-brand-black focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100 transition-all shadow-sm"/>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Proveedor</label>
                 <input type="text" value={form.proveedor} onChange={e => setForm({...form, proveedor: e.target.value.toUpperCase()})}
                   disabled={!plantillaSeleccionada}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-brand-black focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100"/>
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm text-brand-black focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100 transition-all shadow-sm"/>
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-bold text-xs text-brand-gray uppercase tracking-wider">Filtro Almacén</label>
                 <select value={form.filtro_almacen} onChange={e => setForm({...form, filtro_almacen: e.target.value})}
                   disabled={!plantillaSeleccionada}
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black cursor-pointer focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100">
+                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm font-semibold text-brand-black cursor-pointer focus:ring-2 focus:ring-brand-red disabled:opacity-50 disabled:bg-slate-100 transition-all shadow-sm">
                   <option value="SI">SÍ - Disponible en almacén</option>
                   <option value="NO">NO - Oculto</option>
                 </select>
@@ -308,13 +312,13 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
           <div className="lg:w-3/5 p-8 bg-slate-50/50 flex flex-col gap-6 overflow-hidden">
             
             <div className="flex gap-4">
-              <div className="flex-1 bg-brand-black text-center p-6 rounded-xl shadow-md border border-slate-800">
-                <h3 className="text-white/80 font-semibold text-sm mb-2 uppercase tracking-widest">Código CeCo Base</h3>
-                <div className="text-white/50 font-mono text-2xl">
+              <div className="flex-1 bg-white text-center p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="text-brand-gray font-semibold text-sm mb-2 uppercase tracking-widest">Código CeCo Base</h3>
+                <div className="text-brand-black font-mono text-2xl font-bold">
                   {plantillaSeleccionada?.cod_ceco || '------------'}
                 </div>
               </div>
-              <div className="flex-1 bg-brand-red text-center p-6 rounded-xl shadow-md border border-red-800 relative overflow-hidden">
+              <div className="flex-1 bg-brand-red text-center p-6 rounded-xl shadow-md border border-brand-red relative overflow-hidden">
                 <h3 className="text-white/90 font-bold text-sm mb-2 uppercase tracking-widest">Nuevo Código Generado</h3>
                 {cargandoCodigo ? (
                    <div className="text-white/60 animate-pulse font-medium text-lg mt-1">Calculando...</div>
@@ -385,21 +389,29 @@ export default function ModalCeco({ onClose, onSaved }: ModalCecoProps) {
             </div>
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">
+              <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium mt-4">
                 {error}
               </div>
             )}
 
-            <div className="flex justify-end pt-2">
+            {/* Footer */}
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 mt-2">
               {!plantillaSeleccionada && (
-                <span className="text-brand-red font-semibold text-sm self-center mr-4">Selecciona el CeCo correcto como plantilla</span>
+                <span className="text-brand-red font-semibold text-sm mr-auto">Selecciona el CeCo correcto como plantilla</span>
               )}
+              <button onClick={onClose} className="px-5 py-2.5 text-sm font-semibold text-brand-gray hover:text-brand-black rounded-xl hover:bg-slate-200 transition-colors">
+                Cancelar
+              </button>
               <button
                 onClick={guardar}
                 disabled={!esValido || guardando || cargandoCodigo}
-                className="bg-brand-red hover:bg-red-700 active:scale-95 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                className="flex items-center gap-2 bg-brand-red hover:bg-red-700 disabled:bg-slate-300 disabled:text-white disabled:shadow-none text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30 active:scale-95"
               >
-                {guardando ? 'Guardando...' : 'Guardar Nuevo CeCo'}
+                {guardando ? (
+                  <><svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>Guardando…</>
+                ) : (
+                  'Guardar Nuevo CeCo'
+                )}
               </button>
             </div>
 

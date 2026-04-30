@@ -87,52 +87,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   )
 
   const Sidebar = () => (
-    <div className="flex flex-col h-full bg-white border-r border-slate-200 w-60">
-      {/* Logo + Proyecto activo */}
-      <div className="px-4 py-5 border-b border-slate-200">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-lg bg-brand-red flex items-center justify-center flex-shrink-0">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-            </svg>
-          </div>
-          <div>
-            <p className="text-brand-black font-semibold text-sm leading-tight">CIS Nicaragua</p>
-            <p className="text-brand-gray text-xs">Unidad Minera Jabalí</p>
-          </div>
-        </div>
-        {/* Badge de proyecto activo y selector de modulo */}
-        {proyecto && (
-          <div className="flex flex-col gap-2">
-            <div className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 border bg-brand-light border-slate-200`}>
-              <div className="flex items-center gap-2">
-                <span className="text-base">{proyecto.icono}</span>
-                <div>
-                  <p className={`text-xs font-semibold leading-tight text-brand-black`}>{proyecto.nombre}</p>
-                  <p className="text-brand-gray text-xs">{proyecto.id}</p>
-                </div>
-              </div>
-              <Link href="/select-project" className="text-brand-gray hover:text-brand-red transition-colors" title="Cambiar proyecto">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-                </svg>
-              </Link>
-            </div>
-            <Link 
-              href="/select-module" 
-              className="flex items-center justify-center gap-2 w-full py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-brand-red/30 text-xs font-medium text-brand-gray hover:text-brand-black transition-all"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-              </svg>
-              Volver a Módulos
-            </Link>
-          </div>
-        )}
+    <div className="flex flex-col h-full bg-[#111111] text-white w-64 shadow-xl">
+      {/* Logo */}
+      <div className="px-6 py-8 flex items-center gap-2">
+        <span className="text-[#c83232] font-black text-2xl tracking-tight">AESA</span>
+        <span className="text-white font-bold text-2xl tracking-tight">DIGITAL</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+      <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
         {NAV.filter(({ module }) => {
           if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') return module === 'almacen'
           if (pathname.startsWith('/dashboard/produccion')) return module === 'produccion'
@@ -140,16 +103,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           return true
         }).map(({ group, items }) => (
           <div key={group}>
-            <p className="text-xs font-bold text-brand-gray uppercase tracking-wider px-2 mb-1.5">{group}</p>
-            <ul className="space-y-0.5">
+            {/* Si se desean separar por grupos se puede dejar el título, pero en AESA no suele haber titulo de grupo visible en la imagen, lo omitimos visualmente o lo dejamos sutil */}
+            <ul className="space-y-1.5">
               {items.map(({ label, href }) => {
-                const active = pathname.startsWith(href)
+                const active = pathname.startsWith(href) || (pathname === '/dashboard' && href === '/dashboard/produccion') // Fallback logic
                 return (
                   <li key={href}>
                     <Link href={href} onClick={() => setOpen(false)}
-                      className={`flex items-center px-2.5 py-2 rounded-lg text-sm transition-colors ${
-                        active ? 'bg-brand-red/10 text-brand-red font-semibold border-l-2 border-brand-red' : 'text-brand-gray hover:text-brand-black hover:bg-slate-50'
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                        active 
+                          ? 'bg-[#c83232] text-white shadow-md' 
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
                       }`}>
+                      {/* Icono genérico por defecto, puedes personalizar por cada ítem */}
+                      <svg className={`w-5 h-5 ${active ? 'text-white' : 'text-gray-500'}`} fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
                       {label}
                     </Link>
                   </li>
@@ -160,30 +129,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         ))}
       </nav>
 
-      {/* Usuario + logout */}
-      <div className="px-3 pb-4 border-t border-slate-200 pt-3">
-        <div className="flex items-center gap-2.5 px-2.5 py-2">
-          <div className="w-7 h-7 rounded-full bg-brand-red/10 border border-brand-red/20 flex items-center justify-center flex-shrink-0">
-            <span className="text-brand-red text-xs font-bold">
-              {user?.nombre?.[0]?.toUpperCase() ?? 'U'}
-            </span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-brand-black text-xs font-semibold truncate">{user?.nombre ?? 'Usuario'}</p>
-            {user?.acceso && <p className="text-brand-gray text-xs truncate">{user.acceso}</p>}
-          </div>
-          <button onClick={logout} className="text-brand-gray hover:text-brand-red transition-colors p-1" title="Cerrar sesión">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {/* Footer Sidebar */}
+      <div className="px-4 pb-6 mt-auto pt-4 border-t border-white/10">
+          <Link href="/select-module" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Configuración
+          </Link>
+          <button onClick={logout} className="w-full mt-2 flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-[#c83232] hover:bg-white/5 rounded-xl transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
             </svg>
+            Cerrar Sesión
           </button>
-        </div>
       </div>
     </div>
   )
 
   return (
-    <div className="flex h-screen overflow-hidden bg-brand-light">
+    <div className="flex h-screen overflow-hidden bg-[#f4f4f5]">
       {/* Sidebar desktop */}
       <div className="hidden md:flex flex-shrink-0"><Sidebar /></div>
 
@@ -197,17 +163,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Contenido principal */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Header mobile */}
-        <header className="flex md:hidden items-center gap-3 px-4 py-3 border-b border-slate-200 bg-white">
-          <button onClick={() => setOpen(true)} className="text-brand-gray hover:text-brand-black">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
-          <span className="text-brand-black font-semibold text-sm">CIS Nicaragua</span>
+        {/* Header desktop y mobile */}
+        <header className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-gray-200 bg-white shadow-sm z-10">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setOpen(true)} className="md:hidden text-gray-500 hover:text-gray-800">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+            <h1 className="text-xl font-bold text-gray-800">Panel de Control Operativo</h1>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-bold text-gray-800">{user?.nombre ?? 'Usuario'}</p>
+              <p className="text-xs text-gray-500">{user?.acceso ?? 'Rol'}</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-[#c83232] flex items-center justify-center flex-shrink-0 shadow-sm">
+              <span className="text-white text-sm font-bold">
+                {user?.nombre ? user.nombre.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase() : 'U'}
+              </span>
+            </div>
+          </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
       </div>
 
       {/* Toast global siempre presente */}

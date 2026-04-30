@@ -21,14 +21,14 @@ export default function DashboardPage() {
   const max = familias.length ? Math.max(...familias.map(d => d.valor)) : 1
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Dashboard</h1>
-          <p className="text-slate-400 text-sm mt-0.5">Sistema de Gestión — Unidad Minera Jabalí</p>
+          <h1 className="text-xl font-bold text-gray-800">Dashboard de Almacén</h1>
+          <p className="text-gray-500 text-sm mt-0.5">Indicadores principales del almacén</p>
         </div>
-        <span className="inline-flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 border border-green-500/20 px-2.5 py-1 rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"/>
+        <span className="inline-flex items-center gap-1.5 text-xs text-green-600 bg-green-50 border border-green-200 px-2.5 py-1 rounded-full font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"/>
           Supabase conectado
         </span>
       </div>
@@ -40,58 +40,58 @@ export default function DashboardPage() {
           { label: 'Materiales',           value: kl ? '—' : fmtNum(kpi?.materiales ?? 0),   sub: 'códigos únicos' },
           { label: 'Proveedores',          value: kl ? '—' : fmtNum(kpi?.proveedores ?? 0),  sub: 'registros únicos' },
         ].map(({ label, value, sub }) => (
-          <div key={label} className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <p className="text-slate-400 text-sm mb-2">{label}</p>
-            <p className="text-white text-2xl font-bold tracking-tight">{value}</p>
-            <p className="text-slate-500 text-xs mt-1">{sub}</p>
+          <div key={label} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <p className="text-gray-500 text-sm mb-2 font-medium">{label}</p>
+            <p className="text-gray-900 text-2xl font-bold tracking-tight">{value}</p>
+            <p className="text-gray-400 text-xs mt-1">{sub}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-5">Top familias por valor (USD)</h2>
-          {fl ? <p className="text-slate-500 text-sm">Cargando...</p> : (
-            <div className="space-y-3">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <h2 className="text-gray-800 font-bold text-sm mb-5 uppercase tracking-wide">Top familias por valor (USD)</h2>
+          {fl ? <p className="text-gray-500 text-sm">Cargando...</p> : (
+            <div className="space-y-4">
               {familias.map((d, i) => (
-                <div key={d.familia} className="flex items-center gap-3">
-                  <p className="text-slate-400 text-xs w-44 truncate flex-shrink-0">{d.familia}</p>
-                  <div className="flex-1 bg-slate-800 rounded-full h-2 overflow-hidden">
-                    <div className="h-full rounded-full bg-blue-500" style={{ width: `${(d.valor / max) * 100}%` }}/>
+                <div key={d.familia} className="flex items-center gap-4">
+                  <p className="text-gray-600 text-xs w-44 truncate flex-shrink-0 font-medium">{d.familia}</p>
+                  <div className="flex-1 bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                    <div className="h-full rounded-full bg-[#c83232]" style={{ width: `${(d.valor / max) * 100}%` }}/>
                   </div>
-                  <p className="text-white text-xs w-20 text-right flex-shrink-0">{fmtUSD(d.valor)}</p>
+                  <p className="text-gray-800 font-semibold text-xs w-20 text-right flex-shrink-0">{fmtUSD(d.valor)}</p>
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4">Estado de carga de datos</h2>
-          <div className="space-y-3">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <h2 className="text-gray-800 font-bold text-sm mb-5 uppercase tracking-wide">Estado de carga de datos</h2>
+          <div className="space-y-4">
             {STATUS.map(({ t, n, s, p }) => (
               <div key={t} className="flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-slate-300 text-xs font-mono truncate">{t}</p>
-                    <span className="text-slate-500 text-xs ml-2 flex-shrink-0">{n}</span>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <p className="text-gray-600 text-xs font-mono font-semibold truncate">{t}</p>
+                    <span className="text-gray-500 text-xs ml-2 flex-shrink-0 font-medium">{n}</span>
                   </div>
-                  <div className="bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                    <div className={`h-full rounded-full ${s === 'completo' ? 'bg-green-500' : s === 'parcial' ? 'bg-yellow-500' : 'bg-slate-700'}`}
+                  <div className="bg-gray-100 rounded-full h-2 overflow-hidden">
+                    <div className={`h-full rounded-full ${s === 'completo' ? 'bg-green-500' : s === 'parcial' ? 'bg-yellow-500' : 'bg-gray-300'}`}
                       style={{ width: `${p}%` }}/>
                   </div>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full flex-shrink-0 ${
-                  s === 'completo' ? 'bg-green-500/15 text-green-400 border border-green-500/30' :
-                  s === 'parcial'  ? 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/30' :
-                  'bg-slate-700/50 text-slate-400 border border-slate-700'}`}>
+                <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded flex-shrink-0 ${
+                  s === 'completo' ? 'bg-green-50 text-green-600 border border-green-200' :
+                  s === 'parcial'  ? 'bg-yellow-50 text-yellow-600 border border-yellow-200' :
+                  'bg-gray-50 text-gray-500 border border-gray-200'}`}>
                   {s}
                 </span>
               </div>
             ))}
           </div>
-          <p className="text-slate-600 text-xs mt-4 pt-3 border-t border-slate-800">
-            Ejecuta <code className="text-blue-400 bg-slate-800 px-1 rounded">bulk_load.py</code> para completar la carga
+          <p className="text-gray-500 text-xs mt-5 pt-4 border-t border-gray-100">
+            Ejecuta <code className="text-[#c83232] bg-red-50 px-1.5 py-0.5 rounded font-mono font-semibold">bulk_load.py</code> para completar la carga
           </p>
         </div>
       </div>
