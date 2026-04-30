@@ -86,22 +86,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   )
 
-  const Sidebar = () => (
-    <div className="flex flex-col h-full bg-[#111111] text-white w-64 shadow-xl">
-      {/* Logo */}
-      <div className="px-6 py-8 flex items-center gap-2">
-        <span className="text-[#c83232] font-black text-2xl tracking-tight">AESA</span>
-        <span className="text-white font-bold text-2xl tracking-tight">DIGITAL</span>
-      </div>
+  const Sidebar = () => {
+    let moduleName = 'DIGITAL'
+    if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') moduleName = 'ALMACÉN'
+    else if (pathname.startsWith('/dashboard/produccion')) moduleName = 'PRODUCCIÓN'
+    else if (pathname.startsWith('/dashboard/maestros')) moduleName = 'MAESTROS'
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
-        {NAV.filter(({ module }) => {
-          if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') return module === 'almacen'
-          if (pathname.startsWith('/dashboard/produccion')) return module === 'produccion'
-          if (pathname.startsWith('/dashboard/maestros')) return module === 'maestros'
-          return true
-        }).map(({ group, items }) => (
+    return (
+      <div className="flex flex-col h-full bg-[#111111] text-white w-64 shadow-xl">
+        {/* Logo */}
+        <div className="px-6 py-8 flex items-center gap-2">
+          <span className="text-[#c83232] font-black text-2xl tracking-tight">AESA</span>
+          <span className="text-white font-bold text-2xl tracking-tight">{moduleName}</span>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+          {NAV.filter(({ module }) => {
+            if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') return module === 'almacen'
+            if (pathname.startsWith('/dashboard/produccion')) return module === 'produccion'
+            if (pathname.startsWith('/dashboard/maestros')) return module === 'maestros'
+            return true
+          }).map(({ group, items }) => (
           <div key={group}>
             {/* Si se desean separar por grupos se puede dejar el título, pero en AESA no suele haber titulo de grupo visible en la imagen, lo omitimos visualmente o lo dejamos sutil */}
             <ul className="space-y-1.5">
@@ -147,6 +153,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </div>
     </div>
   )
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f4f4f5]">
