@@ -94,10 +94,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
       <div className="flex flex-col h-full bg-[#111111] text-white w-64 shadow-xl">
-        {/* Logo */}
-        <div className="px-6 py-8 flex items-center gap-2">
-          <span className="text-[#c83232] font-black text-2xl tracking-tight">AESA</span>
-          <span className="text-white font-bold text-2xl tracking-tight">{moduleName}</span>
+        {/* Cabecera del Sidebar */}
+        <div className="px-6 py-6 border-b border-white/5 flex flex-col gap-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#c83232] flex items-center justify-center shadow-lg shadow-[#c83232]/20 flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-0.5">Módulo Actual</span>
+              <span className="text-white font-black text-xl tracking-tight leading-none">{moduleName}</span>
+            </div>
+          </div>
+          
+          <Link href="/select-module" className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-xl text-xs font-semibold transition-all border border-white/5">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver a Módulos
+          </Link>
         </div>
 
         {/* Nav */}
