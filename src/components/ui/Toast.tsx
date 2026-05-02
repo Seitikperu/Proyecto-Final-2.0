@@ -127,3 +127,58 @@ export {
   ToastClose,
   ToastAction,
 }
+
+// ── Imperative API (compatible con código existente) ──────────────────────────
+type ToastMsg = {
+  id: number
+  type: 'success' | 'error' | 'info'
+  message: string
+  detail?: string
+}
+
+let _listeners: Array<(t: ToastMsg) => void> = []
+let _nextId = 0
+
+export function showToast(
+  type: 'success' | 'error' | 'info',
+  message: string,
+  detail?: string
+) {
+  const t: ToastMsg = { id: _nextId++, type, message, detail }
+  _listeners.forEach(fn => fn(t))
+}
+
+const COLORS: Record<ToastMsg['type'], string> = {
+  success: 'bg-green-600',
+  error:   'bg-red-600',
+  info:    'bg-blue-600',
+}
+
+export function ToastContainer() {
+  const [toasts, setToasts] = React.useState<ToastMsg[]>([])
+
+  React.useEffect(() => {
+    const handler = (t: ToastMsg) => {
+      setToasts(prev => [...prev, t])
+      setTimeout(() => setToasts(prev => prev.filter(x => x.id !== t.id)), 4000)
+    }
+    _listeners.push(handler)
+    return () => { _listeners = _listeners.filter(fn => fn !== handler) }
+  }, [])
+
+  if (toasts.length === 0) return null
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
+      {toasts.map(t => (
+        <div
+          key={t.id}
+          className={`${COLORS[t.type]} text-white px-4 py-3 rounded-xl text-sm shadow-lg max-w-xs`}
+        >
+          <p className="font-semibold">{t.message}</p>
+          {t.detail && <p className="text-xs opacity-90 mt-0.5">{t.detail}</p>}
+        </div>
+      ))}
+    </div>
+  )
+}

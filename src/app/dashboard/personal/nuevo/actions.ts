@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 
 export async function crearPersonal(payload: any) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     
     // Call the RPC we created in the migration
     const { data, error } = await supabase.rpc('fn_crear_personal', {
@@ -43,7 +43,7 @@ export async function crearPersonal(payload: any) {
 
 export async function checkTrabajadorExiste(trabajador: string) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     
     const { data, error } = await supabase
       .from('personal')
@@ -63,7 +63,7 @@ export async function checkTrabajadorExiste(trabajador: string) {
 
 export async function generarCodigoPreview(tipoRegimen: string, prefijoDefault: string = 'JABO') {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     
     const { data, error } = await supabase.rpc('fn_generar_codigo_personal', {
       p_tipo_regimen: tipoRegimen,
@@ -81,7 +81,7 @@ export async function generarCodigoPreview(tipoRegimen: string, prefijoDefault: 
 
 export async function getUltimosCodigos(tipoRegimen: string) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     
     const { data, error } = await supabase
       .from('personal')
