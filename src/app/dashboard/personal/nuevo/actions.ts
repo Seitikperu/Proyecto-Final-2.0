@@ -79,6 +79,51 @@ export async function generarCodigoPreview(tipoRegimen: string, prefijoDefault: 
   }
 }
 
+export async function getCecoOptions() {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('personal')
+      .select('ceco, descrip_ceco')
+      .eq('activo', 'SI')
+      .not('ceco', 'is', null)
+      .not('descrip_ceco', 'is', null)
+
+    if (error) throw error
+
+    // Deduplicate by ceco code
+    const map = new Map<string, string>()
+    data.forEach(r => { if (r.ceco && r.descrip_ceco) map.set(r.ceco, r.descrip_ceco) })
+    const list = Array.from(map.entries())
+      .map(([ceco, descrip_ceco]) => ({ ceco, descrip_ceco }))
+      .sort((a, b) => a.descrip_ceco.localeCompare(b.descrip_ceco))
+
+    return { success: true, data: list }
+  } catch (err: any) {
+    console.error('Error fetching CECO options:', err)
+    return { success: false, error: err.message, data: [] }
+  }
+}
+
+export async function getAreaOptions() {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('centros_costo')
+      .select('area')
+      .not('area', 'is', null)
+      .order('area')
+
+    if (error) throw error
+
+    const unique = [...new Set(data.map(r => r.area).filter(Boolean))] as string[]
+    return { success: true, data: unique }
+  } catch (err: any) {
+    console.error('Error fetching area options:', err)
+    return { success: false, error: err.message, data: [] }
+  }
+}
+
 export async function getUltimosCodigos(tipoRegimen: string) {
   try {
     const supabase = await createClient()

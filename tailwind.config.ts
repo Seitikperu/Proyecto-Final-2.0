@@ -10,12 +10,18 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          red: '#C83232', // Rojo corporativo según la imagen
-          black: '#0a0a0a', // Negro corporativo
-          gray: '#808080', // Gris corporativo
-          light: '#f4f4f5', // Gris claro para fondos
-          white: '#ffffff', // Blanco
-        }
+          red: '#C83232',
+          black: '#0a0a0a',
+          gray: '#808080',
+          light: '#f4f4f5',
+          white: '#ffffff',
+        },
+        navy: {
+          600: '#2e5ea8',
+          700: '#1d4e89',
+          800: '#163d6e',
+          900: '#0f2d52',
+        },
       }
     } 
   },

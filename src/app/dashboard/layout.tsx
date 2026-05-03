@@ -28,12 +28,13 @@ const NAV = [
     { label: 'Vibraciones',    href: '/dashboard/produccion/vibraciones' },
   ]},
   { group: 'Maestros', module: 'maestros', items: [
-    { label: 'Proveedores', href: '/dashboard/maestros/proveedores' },
-    { label: 'CeCos',       href: '/dashboard/maestros/cecos' },
-    { label: 'Personal',    href: '/dashboard/maestros/personal' },
-    { label: 'Equipos',     href: '/dashboard/maestros/equipos' },
-    { label: 'Materiales',  href: '/dashboard/maestros/materiales' },
-    { label: 'Labores',     href: '/dashboard/maestros/labores' },
+    { label: 'Proveedores',   href: '/dashboard/maestros/proveedores' },
+    { label: 'CeCos',         href: '/dashboard/maestros/cecos' },
+    { label: 'Personal',      href: '/dashboard/maestros/personal' },
+    { label: '+ Nuevo Cód.',  href: '/dashboard/personal/nuevo' },
+    { label: 'Equipos',       href: '/dashboard/maestros/equipos' },
+    { label: 'Materiales',    href: '/dashboard/maestros/materiales' },
+    { label: 'Labores',       href: '/dashboard/maestros/labores' },
   ]},
 ]
 
@@ -90,7 +91,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     let moduleName = 'DIGITAL'
     if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') moduleName = 'ALMACÉN'
     else if (pathname.startsWith('/dashboard/produccion')) moduleName = 'PRODUCCIÓN'
-    else if (pathname.startsWith('/dashboard/maestros')) moduleName = 'MAESTROS'
+    else if (pathname.startsWith('/dashboard/maestros') || pathname.startsWith('/dashboard/personal')) moduleName = 'MAESTROS'
 
     return (
       <div className="flex flex-col h-full bg-[#111111] text-white w-64 shadow-xl">
@@ -121,7 +122,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {NAV.filter(({ module }) => {
             if (pathname.startsWith('/dashboard/almacen') || pathname === '/dashboard') return module === 'almacen'
             if (pathname.startsWith('/dashboard/produccion')) return module === 'produccion'
-            if (pathname.startsWith('/dashboard/maestros')) return module === 'maestros'
+            if (pathname.startsWith('/dashboard/maestros') || pathname.startsWith('/dashboard/personal')) return module === 'maestros'
             return true
           }).map(({ group, items }) => (
           <div key={group}>
