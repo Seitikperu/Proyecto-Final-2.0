@@ -1,18 +1,17 @@
 'use client'
 
 import { useState, KeyboardEvent } from 'react'
+import Link from 'next/link'
 import { usePersonal } from '@/lib/hooks/useAlmacen'
 import type { Personal } from '@/types/database'
 import { BackButton } from '@/components/ui/BackButton'
-import ModalPersonal from '@/components/maestros/ModalPersonal'
 
 export default function Page() {
   const [input, setInput] = useState('')
   const [busqueda, setBusqueda] = useState('')
   const [page, setPage] = useState(1)
-  const [showModal, setShowModal] = useState(false)
 
-  const { data, count, totalPages, loading, refetch } = usePersonal(busqueda, page, 50)
+  const { data, count, totalPages, loading } = usePersonal(busqueda, page, 50)
 
   function buscar() {
     setBusqueda(input.trim())
@@ -44,14 +43,14 @@ export default function Page() {
             {loading ? 'Cargando...' : `${count.toLocaleString('es-NI')} trabajadores registrados`}
           </p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
+        <Link
+          href="/dashboard/personal/nuevo"
           className="inline-flex items-center gap-2 bg-brand-red hover:bg-red-700 active:scale-95 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
           </svg>
           + Nuevo Personal
-        </button>
+        </Link>
       </div>
 
       {/* Filtros */}
@@ -167,15 +166,6 @@ export default function Page() {
         )}
       </div>
 
-      {showModal && (
-        <ModalPersonal
-          onClose={() => setShowModal(false)}
-          onSaved={() => {
-            setShowModal(false)
-            refetch()
-          }}
-        />
-      )}
     </div>
   )
 }
