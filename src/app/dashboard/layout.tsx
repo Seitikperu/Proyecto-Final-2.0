@@ -23,6 +23,7 @@ const NAV = [
   ]},
   { group: 'Producción', module: 'produccion', items: [
     { label: 'Control Diario', href: '/dashboard/produccion' },
+    { label: 'Topografía',     href: '/dashboard/produccion/topografia' },
     { label: 'Plan Mensual',   href: '/dashboard/produccion/plan-mes' },
     { label: 'Explosivos',     href: '/dashboard/produccion/explosivos' },
     { label: 'Vibraciones',    href: '/dashboard/produccion/vibraciones' },
