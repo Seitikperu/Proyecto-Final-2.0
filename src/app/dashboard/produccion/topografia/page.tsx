@@ -159,7 +159,7 @@ export default function TopografiaPage() {
         <BackButton />
         <div>
           <h1 className="text-xl font-bold text-white">Topografía</h1>
-          <p className="text-slate-400 text-sm">Registro y validación de avances topográficos</p>
+          <p className="text-[#c83232] text-sm font-medium">Registro y validación de avances topográficos</p>
         </div>
       </div>
 

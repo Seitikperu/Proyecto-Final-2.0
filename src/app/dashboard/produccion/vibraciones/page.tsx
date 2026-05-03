@@ -155,7 +155,7 @@ export default function VibracionesPage() {
         <BackButton />
         <div>
           <h1 className="text-xl font-bold text-white">Vibraciones</h1>
-          <p className="text-slate-400 text-sm">Registro de monitoreo de vibraciones y ruido</p>
+          <p className="text-[#c83232] text-sm font-medium">Registro de monitoreo de vibraciones y ruido</p>
         </div>
       </div>
 

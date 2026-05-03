@@ -186,7 +186,7 @@ export default function ExplosivosPage() {
         <BackButton />
         <div>
           <h1 className="text-xl font-bold text-white">Explosivos</h1>
-          <p className="text-slate-400 text-sm">Registro de consumo de explosivos e insumos</p>
+          <p className="text-[#c83232] text-sm font-medium">Registro de consumo de explosivos e insumos</p>
         </div>
       </div>
 

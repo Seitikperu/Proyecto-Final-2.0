@@ -168,7 +168,7 @@ export default function ControlProyectoPage() {
         <BackButton />
         <div>
           <h1 className="text-xl font-bold text-white">Control de Proyecto</h1>
-          <p className="text-slate-400 text-sm">Registro diario de producción por labor y turno</p>
+          <p className="text-[#c83232] text-sm font-medium">Registro diario de producción por labor y turno</p>
         </div>
       </div>
 

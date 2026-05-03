@@ -195,7 +195,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
               </svg>
             </button>
-            <h1 className="text-xl font-bold text-gray-800">Panel de Control Operativo</h1>
           </div>
           
           <div className="flex items-center gap-4">
