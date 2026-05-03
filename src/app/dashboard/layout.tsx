@@ -154,19 +154,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Footer Sidebar */}
       <div className="px-4 pb-6 mt-auto pt-4 border-t border-white/10">
-          <Link href="/select-module" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Configuración
-          </Link>
-          <button onClick={logout} className="w-full mt-2 flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-[#c83232] hover:bg-white/5 rounded-xl transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-            </svg>
-            Cerrar Sesión
-          </button>
+
+        {/* Usuario */}
+        <div className="flex items-center gap-3 px-4 py-3 mb-1">
+          <div className="w-9 h-9 rounded-full bg-[#c83232] flex items-center justify-center flex-shrink-0 shadow-md shadow-[#c83232]/20">
+            <span className="text-white text-xs font-bold">
+              {user?.nombre ? user.nombre.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase() : 'U'}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-white truncate">{user?.nombre ?? 'Usuario'}</p>
+            <p className="text-xs text-gray-500 truncate">{user?.acceso ?? 'Rol'}</p>
+          </div>
+        </div>
+
+        <Link href="/select-module" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Configuración
+        </Link>
+        <button onClick={logout} className="w-full mt-2 flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-[#c83232] hover:bg-white/5 rounded-xl transition-colors">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Cerrar Sesión
+        </button>
       </div>
     </div>
   )
@@ -187,29 +201,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Contenido principal */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Header desktop y mobile */}
-        <header className="flex items-center justify-between px-6 md:px-8 py-4 border-b border-gray-200 bg-white shadow-sm z-10">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setOpen(true)} className="md:hidden text-gray-500 hover:text-gray-800">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
-              </svg>
-            </button>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="text-right hidden sm:block">
-              <p className="text-sm font-bold text-gray-800">{user?.nombre ?? 'Usuario'}</p>
-              <p className="text-xs text-gray-500">{user?.acceso ?? 'Rol'}</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-[#c83232] flex items-center justify-center flex-shrink-0 shadow-sm">
-              <span className="text-white text-sm font-bold">
-                {user?.nombre ? user.nombre.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase() : 'U'}
-              </span>
-            </div>
-          </div>
-        </header>
-
         <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
       </div>
 
