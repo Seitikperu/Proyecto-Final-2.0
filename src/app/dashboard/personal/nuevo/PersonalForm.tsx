@@ -18,21 +18,27 @@ import {
   getAreaOptions,
 } from './actions'
 
+interface PersonalFormProps {
+  onClose?: () => void
+  onSaved?: () => void
+}
+
 const schema = z.object({
   unidad_produccion: z.string().min(1, 'Requerido'),
-  tipo_planilla: z.string().min(1, 'Requerido'),
-  ocupacion: z.string().min(1, 'Requerido'),
-  area: z.string().optional(),
-  cargo_ceco: z.string().min(1, 'Seleccione un cargo CECO'),
-  ceco: z.string().optional(),
-  trabajador: z.string().min(3, 'Mínimo 3 caracteres'),
+  tipo_planilla:     z.string().min(1, 'Requerido'),
+  ocupacion:         z.string().min(1, 'Requerido'),
+  area:              z.string().min(1, 'Seleccione un área'),
+  cargo_ceco:        z.string().min(1, 'Seleccione un cargo CECO'),
+  ceco:              z.string().optional(),
+  trabajador:        z.string().min(3, 'Mínimo 3 caracteres'),
 })
 
 type FormValues = z.infer<typeof schema>
 
 const FIELD_CLS =
   'w-full border border-navy-700 rounded px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy-600 focus:border-navy-600'
-const LABEL_CLS = 'text-[11px] font-bold text-navy-900 uppercase tracking-wide text-right pt-2'
+const LABEL_CLS =
+  'text-[11px] font-bold text-navy-900 uppercase tracking-wide text-right pt-2'
 
 function Row({
   label,
@@ -44,7 +50,7 @@ function Row({
   children: React.ReactNode
 }) {
   return (
-    <div className="grid grid-cols-[170px_1fr] items-start gap-3 py-2.5 border-b border-slate-100 last:border-0">
+    <div className="grid grid-cols-[160px_1fr] items-start gap-3 py-2.5 border-b border-slate-100 last:border-0">
       <span className={LABEL_CLS}>{label}</span>
       <div>
         {children}
@@ -54,14 +60,14 @@ function Row({
   )
 }
 
-export function PersonalForm() {
+export function PersonalForm({ onClose, onSaved }: PersonalFormProps = {}) {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const [isDuplicate, setIsDuplicate] = useState(false)
+  const [isDuplicate, setIsDuplicate]         = useState(false)
   const [checkingDuplicate, setCheckingDuplicate] = useState(false)
-  const [generatedCode, setGeneratedCode] = useState('')
-  const [cecoCode, setCecoCode] = useState('')
+  const [generatedCode, setGeneratedCode]     = useState('')
+  const [cecoCode, setCecoCode]               = useState('')
 
   const {
     register,
@@ -74,18 +80,18 @@ export function PersonalForm() {
     resolver: zodResolver(schema),
     defaultValues: {
       unidad_produccion: 'JABO',
-      tipo_planilla: 'PERU',
-      ocupacion: '',
-      area: '',
-      cargo_ceco: '',
-      ceco: '',
-      trabajador: '',
+      tipo_planilla:     'PERU',
+      ocupacion:         '',
+      area:              '',
+      cargo_ceco:        '',
+      ceco:              '',
+      trabajador:        '',
     },
   })
 
-  const unidad = watch('unidad_produccion')
-  const trabajadorVal = watch('trabajador')
-  const selectedCargoKey = watch('cargo_ceco')
+  const unidad           = watch('unidad_produccion')
+  const trabajadorVal    = watch('trabajador')
+  const selectedCargoCeco = watch('cargo_ceco')
 
   // ─── Queries ────────────────────────────────────────────────────────────────
 
@@ -124,11 +130,11 @@ export function PersonalForm() {
     },
   })
 
-  // Auto-fill CECO code when cargo_ceco changes
+  // Auto-fill código CECO al seleccionar cargo
   useEffect(() => {
-    if (selectedCargoKey && cecoOptions.length > 0) {
+    if (selectedCargoCeco && cecoOptions.length > 0) {
       const match = (cecoOptions as { ceco: string; descrip_ceco: string }[]).find(
-        c => c.descrip_ceco === selectedCargoKey
+        c => c.descrip_ceco === selectedCargoCeco
       )
       const code = match?.ceco || ''
       setCecoCode(code)
@@ -137,7 +143,7 @@ export function PersonalForm() {
       setCecoCode('')
       setValue('ceco', '')
     }
-  }, [selectedCargoKey, cecoOptions, setValue])
+  }, [selectedCargoCeco, cecoOptions, setValue])
 
   // ─── Mutation ───────────────────────────────────────────────────────────────
 
@@ -160,6 +166,7 @@ export function PersonalForm() {
       reset()
       queryClient.invalidateQueries({ queryKey: ['ultimosCodigos'] })
       queryClient.invalidateQueries({ queryKey: ['codigoPreview'] })
+      onSaved?.()
     },
     onError: (error: any) => {
       showToast('error', error.message || 'Error inesperado')
@@ -172,18 +179,18 @@ export function PersonalForm() {
       return
     }
     mutation.mutate({
-      tipo_regimen: values.unidad_produccion,
-      prefijo_default: values.unidad_produccion,
-      trabajador: values.trabajador,
-      ocupacion: values.ocupacion,
-      ceco: values.ceco || '',
-      descrip_ceco: values.cargo_ceco,
-      tipo_planilla: values.tipo_planilla,
-      aprobador01: '',
+      tipo_regimen:     values.unidad_produccion,
+      prefijo_default:  values.unidad_produccion,
+      trabajador:       values.trabajador,
+      ocupacion:        values.ocupacion,
+      ceco:             values.ceco || '',
+      descrip_ceco:     values.cargo_ceco,
+      tipo_planilla:    values.tipo_planilla,
+      aprobador01:      '',
       autorizacion_salm: 'SI',
-      Acceso_Almacen: 'SI',
-      proyecto_id: 1,
-      proyecto_nombre: 'Mina Jabalí',
+      Acceso_Almacen:   'SI',
+      proyecto_id:      1,
+      proyecto_nombre:  'Mina Jabalí',
     })
   }
 
@@ -196,7 +203,11 @@ export function PersonalForm() {
     setCheckingDuplicate(false)
   }
 
-  // Distinct descriptions for CARGO CECO select
+  function handleCancel() {
+    if (onClose) onClose()
+    else router.back()
+  }
+
   const cargoDescriptions = [
     ...new Set(
       (cecoOptions as { ceco: string; descrip_ceco: string }[]).map(c => c.descrip_ceco)
@@ -206,9 +217,9 @@ export function PersonalForm() {
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4">
 
-      {/* ── LEFT: FORM ─────────────────────────────────────────────────── */}
+      {/* ── FORMULARIO ─────────────────────────────────────────────────── */}
       <div className="border border-slate-200 rounded-lg shadow-sm overflow-hidden bg-white">
         <div className="bg-navy-900 px-6 py-4">
           <h2 className="text-white font-bold text-sm uppercase tracking-widest">
@@ -241,7 +252,7 @@ export function PersonalForm() {
             />
           </Row>
 
-          <Row label="Área">
+          <Row label="Área" error={errors.area?.message}>
             <select className={FIELD_CLS} {...register('area')}>
               <option value="">Seleccione área...</option>
               {(areaOptions as string[]).map(a => (
@@ -302,11 +313,11 @@ export function PersonalForm() {
             </div>
           </Row>
 
-          {/* Buttons */}
+          {/* Botones */}
           <div className="pt-6 flex justify-end gap-3">
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={handleCancel}
               className="px-6 py-2.5 rounded bg-brand-red text-white font-bold text-sm hover:bg-red-700 transition-colors"
             >
               CANCELAR
@@ -324,18 +335,18 @@ export function PersonalForm() {
         </form>
       </div>
 
-      {/* ── RIGHT: SUMMARY TABLE ───────────────────────────────────────── */}
+      {/* ── TABLA RESUMEN ──────────────────────────────────────────────── */}
       <div>
         <h3 className="text-center font-bold text-navy-900 text-[11px] uppercase tracking-wider mb-2">
           Resumen de Centro de Costos por Selección
         </h3>
         <div className="border border-navy-900 rounded overflow-hidden shadow-sm">
-          <div className="bg-navy-900 text-white grid grid-cols-[90px_1fr_1fr] gap-2 px-3 py-2.5 text-[11px] font-bold uppercase tracking-wide">
+          <div className="bg-navy-900 text-white grid grid-cols-[80px_1fr_1fr] gap-2 px-3 py-2.5 text-[11px] font-bold uppercase tracking-wide">
             <div>Cód</div>
             <div>Trabajador</div>
             <div>Ocupación</div>
           </div>
-          <div className="divide-y divide-slate-100 bg-white min-h-[200px]">
+          <div className="divide-y divide-slate-100 bg-white min-h-[180px]">
             {(tableData as any[]).length === 0 ? (
               <div className="flex items-center justify-center h-32 text-slate-400 text-xs italic">
                 Sin registros para este régimen
@@ -344,7 +355,7 @@ export function PersonalForm() {
               (tableData as any[]).map(row => (
                 <div
                   key={row.id}
-                  className="grid grid-cols-[90px_1fr_1fr] gap-2 px-3 py-2.5 text-xs hover:bg-slate-50 transition-colors"
+                  className="grid grid-cols-[80px_1fr_1fr] gap-2 px-3 py-2.5 text-xs hover:bg-slate-50 transition-colors"
                 >
                   <div className="font-mono font-bold text-navy-800">{row.codigo}</div>
                   <div className="truncate text-slate-700" title={row.trabajador}>

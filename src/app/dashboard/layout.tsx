@@ -31,7 +31,6 @@ const NAV = [
     { label: 'Proveedores',   href: '/dashboard/maestros/proveedores' },
     { label: 'CeCos',         href: '/dashboard/maestros/cecos' },
     { label: 'Personal',      href: '/dashboard/maestros/personal' },
-    { label: '+ Nuevo Cód.',  href: '/dashboard/personal/nuevo' },
     { label: 'Equipos',       href: '/dashboard/maestros/equipos' },
     { label: 'Materiales',    href: '/dashboard/maestros/materiales' },
     { label: 'Labores',       href: '/dashboard/maestros/labores' },
