@@ -201,7 +201,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Contenido principal */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-0">{children}</main>
       </div>
 
       {/* Toast global siempre presente */}
