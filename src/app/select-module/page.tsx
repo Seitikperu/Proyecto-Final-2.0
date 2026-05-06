@@ -72,7 +72,7 @@ const MODULES = [
     textColor: 'text-brand-black group-hover:text-brand-red',
     bgIcon: 'bg-brand-light',
     ringHover: 'hover:ring-brand-red/20',
-    subItems: ['Control Diario', 'Plan Mensual', 'Explosivos', 'Vibraciones'],
+    subItems: ['Control de Proyecto', 'Plan Mensual', 'Explosivos', 'Vibraciones'],
     Icon: IconProduccion,
   },
   {

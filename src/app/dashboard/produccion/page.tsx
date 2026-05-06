@@ -58,9 +58,9 @@ const EMPTY: FormDraft = {
 
 function today() { return new Date().toISOString().split('T')[0] }
 
-const INP = 'w-full bg-white border-2 border-[#1e3a8a]/20 text-[#1e3a8a] font-medium rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent placeholder:text-slate-400'
-const SEL = 'w-full bg-white border-2 border-[#1e3a8a]/20 text-[#1e3a8a] font-medium rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent'
-const LBL = 'text-sm font-bold text-[#1e3a8a] uppercase tracking-wide mb-1 block'
+const INP = 'w-full bg-white border border-slate-300 text-brand-black rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent placeholder:text-slate-400'
+const SEL = 'w-full bg-white border border-slate-300 text-brand-black rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent'
+const LBL = 'text-sm font-bold text-slate-700 uppercase tracking-wide mb-1 block'
 const CHK_LBL = 'text-xs font-medium text-slate-700 flex items-center gap-1.5 cursor-pointer'
 
 // ─── Componente ───────────────────────────────────────────────────────────────
@@ -207,12 +207,12 @@ export default function ControlProyectoPage() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-brand-light flex flex-col">
       {/* Header AESA Branding */}
-      <div className="bg-[#001f5f] text-white py-4 px-6 flex items-center gap-4 shadow-md">
+      <div className="bg-white border-b border-slate-200 py-4 px-6 flex items-center gap-4 shadow-sm">
         <BackButton />
-        <h1 className="text-2xl font-normal tracking-wide mx-auto pr-12 uppercase">
-          C. DE PROYECTO
+        <h1 className="text-2xl font-black text-brand-black tracking-wide mx-auto pr-12 uppercase">
+          CONTROL DE PROYECTO
         </h1>
       </div>
 
@@ -243,7 +243,7 @@ export default function ControlProyectoPage() {
                 value={form.labor} 
                 onChange={v => setField('labor', v)} 
                 placeholder="Buscar elementos"
-                className="!bg-white !border-[#1e3a8a]/20 !text-[#1e3a8a]"
+                className="!bg-white !border-slate-300 !text-brand-black focus-within:!ring-brand-red"
               />
             </div>
 
@@ -254,7 +254,7 @@ export default function ControlProyectoPage() {
                 value={form.actividad} 
                 onChange={v => setField('actividad', v)} 
                 placeholder="Buscar elementos"
-                className="!bg-white !border-[#1e3a8a]/20 !text-[#1e3a8a]"
+                className="!bg-white !border-slate-300 !text-brand-black focus-within:!ring-brand-red"
               />
             </div>
 
@@ -263,15 +263,15 @@ export default function ControlProyectoPage() {
               <label className={LBL}>Ciclo</label>
               <div className="space-y-1.5 mt-2">
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.limpieza} onChange={e => setCiclo('limpieza', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.limpieza} onChange={e => setCiclo('limpieza', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Limpieza
                 </label>
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.sostenimiento} onChange={e => setCiclo('sostenimiento', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.sostenimiento} onChange={e => setCiclo('sostenimiento', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Sostenimiento
                 </label>
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.en_proceso} onChange={e => setCiclo('en_proceso', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.en_proceso} onChange={e => setCiclo('en_proceso', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   En proceso
                 </label>
               </div>
@@ -302,7 +302,7 @@ export default function ControlProyectoPage() {
                 value={form.codigo_equipo} 
                 onChange={v => setField('codigo_equipo', v)} 
                 placeholder="Buscar elementos"
-                className="!bg-black !text-white !border-black" // As seen in image
+                className="!bg-white !border-slate-300 !text-brand-black focus-within:!ring-brand-red"
               />
             </div>
 
@@ -316,19 +316,19 @@ export default function ControlProyectoPage() {
               <div className="text-[10px] font-bold text-slate-400 mb-2 tracking-widest">L B SH S P V</div>
               <div className="grid grid-cols-2 gap-x-2 gap-y-1.5">
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.bombeo} onChange={e => setCiclo('bombeo', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.bombeo} onChange={e => setCiclo('bombeo', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Bombeo
                 </label>
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.shotcrete} onChange={e => setCiclo('shotcrete', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.shotcrete} onChange={e => setCiclo('shotcrete', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Shotcrete
                 </label>
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.perforacion} onChange={e => setCiclo('perforacion', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.perforacion} onChange={e => setCiclo('perforacion', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Perforación
                 </label>
                 <label className={CHK_LBL}>
-                  <input type="checkbox" checked={form.ciclos.voladura} onChange={e => setCiclo('voladura', e.target.checked)} className="accent-[#1e3a8a] w-4 h-4" />
+                  <input type="checkbox" checked={form.ciclos.voladura} onChange={e => setCiclo('voladura', e.target.checked)} className="accent-brand-red w-4 h-4" />
                   Voladura
                 </label>
               </div>
@@ -347,7 +347,7 @@ export default function ControlProyectoPage() {
           <div className="flex flex-col sm:flex-row items-end sm:items-center gap-6 mt-4">
             <button
               onClick={agregar}
-              className="px-10 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#1e3a8a] border-2 border-slate-300 text-lg font-bold rounded shadow-sm transition-colors uppercase tracking-widest whitespace-nowrap"
+              className="px-10 py-2.5 bg-white hover:bg-slate-50 text-brand-red border border-slate-300 text-lg font-bold rounded shadow-sm transition-colors uppercase tracking-widest whitespace-nowrap"
             >
               Agregar
             </button>
@@ -359,14 +359,14 @@ export default function ControlProyectoPage() {
                 value={form.jefe_guardia_turno} 
                 onChange={v => setField('jefe_guardia_turno', v)} 
                 placeholder="Buscar elementos"
-                className="!bg-white !border-[#1e3a8a]/40 !text-[#1e3a8a]"
+                className="!bg-white !border-slate-300 !text-brand-black focus-within:!ring-brand-red"
               />
             </div>
 
             <button
               onClick={registrarABD}
               disabled={registrando}
-              className="ml-auto px-10 py-2.5 bg-[#1e3a8a] hover:bg-[#152960] text-white text-lg font-bold rounded shadow-sm transition-colors disabled:opacity-50 uppercase tracking-widest"
+              className="ml-auto px-10 py-2.5 bg-brand-red hover:bg-red-800 text-white text-lg font-bold rounded shadow-sm transition-colors disabled:opacity-50 uppercase tracking-widest"
             >
               {registrando ? 'Guardando...' : 'Registrar a BD'}
             </button>
@@ -374,11 +374,11 @@ export default function ControlProyectoPage() {
         </div>
 
         {/* Tabla Staging + Guardados combinados o separados */}
-        <div className="bg-white border-2 border-[#1e3a8a] min-h-[400px]">
+        <div className="bg-white border border-slate-200 shadow-sm rounded-lg min-h-[400px] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#1e3a8a] text-white">
+                <tr className="bg-brand-red text-white">
                   <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Fecha</th>
                   <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Turno</th>
                   <th className="px-4 py-2 text-left font-semibold uppercase tracking-wide">Labor</th>
