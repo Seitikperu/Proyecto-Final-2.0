@@ -20,6 +20,7 @@ const NAV = [
     { label: 'Salidas',    href: '/dashboard/almacen/salidas' },
     { label: 'Stock',      href: '/dashboard/almacen/stock' },
     { label: 'Inventario', href: '/dashboard/almacen/inventario' },
+    { label: 'Reportes',   href: '/dashboard/almacen/reportes' },
   ]},
   { group: 'Producción', module: 'produccion', items: [
     { label: 'Control de Proyecto', href: '/dashboard/produccion' },
