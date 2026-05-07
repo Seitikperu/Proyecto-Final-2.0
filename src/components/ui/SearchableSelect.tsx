@@ -73,14 +73,14 @@ export default function SearchableSelect({ options, value, onChange, placeholder
         }}
         placeholder={placeholder}
         autoComplete="off"
-        className={`w-full bg-slate-900 border border-slate-700 text-white placeholder-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+        className={`w-full bg-white border border-slate-300 text-brand-black placeholder-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
       />
       {open && (
-        <ul className="absolute z-30 mt-1 w-full bg-slate-800 border border-slate-700 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+        <ul className="absolute z-30 mt-1 w-full bg-slate-50 border border-slate-300 rounded-lg shadow-xl max-h-48 overflow-y-auto">
           {filteredOptions.length > 0 ? filteredOptions.map((opt, i) => (
             <li
               key={`${opt.value}-${i}`}
-              className="px-3 py-2 hover:bg-slate-700 cursor-pointer text-sm text-white border-b border-slate-700/50 last:border-0"
+              className="px-3 py-2 hover:bg-slate-700 cursor-pointer text-sm text-brand-black border-b border-slate-300/50 last:border-0"
               onClick={() => {
                 onChange(opt.value)
                 setSearch(opt.label)
@@ -90,7 +90,7 @@ export default function SearchableSelect({ options, value, onChange, placeholder
               {opt.label}
             </li>
           )) : (
-            <li className="px-3 py-2 text-sm text-slate-500 italic">Sin coincidencias</li>
+            <li className="px-3 py-2 text-sm text-brand-gray italic">Sin coincidencias</li>
           )}
         </ul>
       )}

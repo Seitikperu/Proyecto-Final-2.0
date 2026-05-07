@@ -35,8 +35,8 @@ function today() {
   return new Date().toISOString().split('T')[0]
 }
 
-const INP = 'w-20 bg-slate-800 border border-slate-700 text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#c83232]'
-const SEL = 'bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#c83232]'
+const INP = 'w-20 bg-slate-50 border border-slate-300 text-brand-black rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red'
+const SEL = 'bg-slate-50 border border-slate-300 text-brand-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red'
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 
@@ -152,26 +152,27 @@ export default function TopografiaPage() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="p-6 max-w-screen-2xl mx-auto space-y-4">
+    <div className="min-h-screen bg-brand-light flex flex-col">
+      {/* Header handled dynamically or via previous regex */}
+      <div className="flex-1 p-6 max-w-[1400px] mx-auto w-full space-y-6">
 
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="bg-white border-b border-slate-200 py-4 px-6 flex items-center gap-4 shadow-sm">
         <BackButton />
-        <div>
-          <h1 className="text-xl font-bold text-white">Topografía</h1>
-          <p className="text-[#c83232] text-sm font-medium">Registro y validación de avances topográficos</p>
-        </div>
+        <h1 className="text-2xl font-black text-brand-black tracking-wide mx-auto pr-12 uppercase">
+          Topografía
+        </h1>
       </div>
 
       {/* Filtros */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+      <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-4">
         <div className="flex flex-wrap gap-4 items-end">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Fecha</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1 uppercase tracking-wider">Fecha</label>
             <input type="date" value={fecha} onChange={e => setFecha(e.target.value)} className={SEL} />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Actividad</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1 uppercase tracking-wider">Actividad</label>
             <select value={filtroAct} onChange={e => setFiltroAct(e.target.value)} className={`${SEL} min-w-[200px]`}>
               <option value="">Todas las actividades</option>
               {actividades.map(a => <option key={a} value={a}>{a}</option>)}
@@ -180,7 +181,7 @@ export default function TopografiaPage() {
           <button
             onClick={fetchData}
             disabled={loading}
-            className="px-5 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="px-5 py-2 bg-slate-700 hover:bg-slate-600 text-brand-black text-sm font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             Buscar
           </button>
@@ -188,13 +189,13 @@ export default function TopografiaPage() {
       </div>
 
       {/* Tabla */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[900px]">
             <thead>
-              <tr className="bg-slate-800 border-b border-slate-700">
+              <tr className="bg-slate-50 border-b border-slate-300">
                 {['Fecha','Turno','Labor','Actividad','Ejec.','Observaciones','Avance (m)','Ancho (m)','Alto (m)','Validar'].map(h => (
-                  <th key={h} className="px-3 py-3 text-left text-xs font-bold text-slate-300 uppercase tracking-wider whitespace-nowrap">
+                  <th key={h} className="px-3 py-3 text-left text-xs font-bold text-slate-700 uppercase tracking-wider whitespace-nowrap">
                     {h}
                   </th>
                 ))}
@@ -207,14 +208,14 @@ export default function TopografiaPage() {
                   <tr key={i}>
                     {Array.from({ length: 10 }).map((__, j) => (
                       <td key={j} className="px-3 py-3">
-                        <div className="h-4 bg-slate-800 rounded animate-pulse w-16" />
+                        <div className="h-4 bg-slate-50 rounded animate-pulse w-16" />
                       </td>
                     ))}
                   </tr>
                 ))
               ) : cproyecto.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={10} className="px-6 py-12 text-center text-brand-gray">
                     No hay registros de producción para la fecha y filtros seleccionados
                   </td>
                 </tr>
@@ -224,9 +225,9 @@ export default function TopografiaPage() {
                   return (
                     <tr
                       key={row.id}
-                      className={`transition-colors ${st?.validado ? 'bg-green-900/10 hover:bg-green-900/20' : 'hover:bg-slate-800/50'}`}
+                      className={`transition-colors ${st?.validado ? 'bg-green-900/10 hover:bg-green-900/20' : 'hover:bg-slate-50/50'}`}
                     >
-                      <td className="px-3 py-2.5 text-slate-300 whitespace-nowrap text-xs">{row.fecha}</td>
+                      <td className="px-3 py-2.5 text-slate-700 whitespace-nowrap text-xs">{row.fecha}</td>
 
                       <td className="px-3 py-2.5">
                         <span className={`inline-flex px-2 py-0.5 rounded text-xs font-bold ${
@@ -238,19 +239,19 @@ export default function TopografiaPage() {
                         </span>
                       </td>
 
-                      <td className="px-3 py-2.5 text-slate-200 font-medium max-w-[180px] truncate text-xs" title={row.labor}>
+                      <td className="px-3 py-2.5 text-slate-800 font-medium max-w-[180px] truncate text-xs" title={row.labor}>
                         {row.labor}
                       </td>
 
-                      <td className="px-3 py-2.5 text-slate-400 text-xs max-w-[120px] truncate" title={row.actividad ?? ''}>
+                      <td className="px-3 py-2.5 text-slate-600 text-xs max-w-[120px] truncate" title={row.actividad ?? ''}>
                         {row.actividad ?? '—'}
                       </td>
 
-                      <td className="px-3 py-2.5 text-slate-300 text-center text-xs">
+                      <td className="px-3 py-2.5 text-slate-700 text-center text-xs">
                         {row.ejecutado ?? '—'}
                       </td>
 
-                      <td className="px-3 py-2.5 text-slate-400 text-xs max-w-[140px] truncate" title={row.observaciones ?? ''}>
+                      <td className="px-3 py-2.5 text-slate-600 text-xs max-w-[140px] truncate" title={row.observaciones ?? ''}>
                         {row.observaciones ?? '—'}
                       </td>
 
@@ -285,8 +286,8 @@ export default function TopografiaPage() {
                           title={st?.validado ? 'Ya validado — clic para actualizar' : 'Guardar y validar'}
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold transition-all disabled:opacity-50 ${
                             st?.validado
-                              ? 'bg-green-700 hover:bg-green-600 text-white'
-                              : 'bg-slate-700 hover:bg-green-700 text-slate-300 hover:text-white'
+                              ? 'bg-green-700 hover:bg-green-600 text-brand-black'
+                              : 'bg-slate-700 hover:bg-green-700 text-slate-700 hover:text-brand-black'
                           }`}
                         >
                           {st?.saving ? (
@@ -311,14 +312,15 @@ export default function TopografiaPage() {
         </div>
 
         {!loading && cproyecto.length > 0 && (
-          <div className="px-4 py-3 border-t border-slate-800 flex items-center justify-between">
-            <span className="text-slate-500 text-xs">{cproyecto.length} registros encontrados</span>
-            <span className={`text-xs font-semibold ${validados === cproyecto.length ? 'text-green-400' : 'text-slate-400'}`}>
+          <div className="px-4 py-3 border-t border-slate-200 shadow-sm flex items-center justify-between">
+            <span className="text-brand-gray text-xs">{cproyecto.length} registros encontrados</span>
+            <span className={`text-xs font-semibold ${validados === cproyecto.length ? 'text-green-400' : 'text-slate-600'}`}>
               {validados} / {cproyecto.length} validados
             </span>
           </div>
         )}
       </div>
+            </div>
     </div>
   )
 }

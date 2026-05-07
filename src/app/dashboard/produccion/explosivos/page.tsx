@@ -51,10 +51,10 @@ const FANEL_NUMS = Array.from({ length: 30 }, (_, i) => String(i + 1).padStart(2
 function today() { return new Date().toISOString().split('T')[0] }
 function numOrNull(val: string) { return val.trim() ? parseFloat(val) : null }
 
-const SEL = 'w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#c83232]'
-const INP = 'w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#c83232] placeholder:text-slate-500'
-const NUM = 'w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-1 focus:ring-[#c83232] placeholder:text-slate-500'
-const LBL = 'text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 block'
+const SEL = 'w-full bg-slate-50 border border-slate-300 text-brand-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red'
+const INP = 'w-full bg-slate-50 border border-slate-300 text-brand-black rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red placeholder:text-brand-gray'
+const NUM = 'w-full bg-slate-50 border border-slate-300 text-brand-black rounded-lg px-3 py-2 text-sm text-right focus:outline-none focus:ring-1 focus:ring-brand-red placeholder:text-brand-gray'
+const LBL = 'text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1 block'
 
 function emptyForm(): FormDraft {
   return {
@@ -179,24 +179,24 @@ export default function ExplosivosPage() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="p-6 max-w-screen-2xl mx-auto space-y-5">
+    <div className="min-h-screen bg-brand-light flex flex-col">
+      <div className="flex-1 p-6 max-w-[1400px] mx-auto w-full space-y-5">
 
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="bg-white border-b border-slate-200 py-4 px-6 flex items-center gap-4 shadow-sm">
         <BackButton />
-        <div>
-          <h1 className="text-xl font-bold text-white">Explosivos</h1>
-          <p className="text-[#c83232] text-sm font-medium">Registro de consumo de explosivos e insumos</p>
-        </div>
+        <h1 className="text-2xl font-black text-brand-black tracking-wide mx-auto pr-12 uppercase">
+          Explosivos
+        </h1>
       </div>
 
       {/* Formulario */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-5">
-        <h2 className="text-sm font-bold text-white uppercase tracking-wider">Nuevo Registro</h2>
+      <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-4 space-y-5">
+        <h2 className="text-sm font-bold text-brand-black uppercase tracking-wider">Nuevo Registro</h2>
 
         {/* Datos generales */}
         <div>
-          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-3 border-b border-slate-800 pb-1">Datos Generales</p>
+          <p className="text-xs text-brand-gray font-semibold uppercase tracking-wider mb-3 border-b border-slate-200 shadow-sm pb-1">Datos Generales</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div>
               <label className={LBL}>Fecha</label>
@@ -251,7 +251,7 @@ export default function ExplosivosPage() {
 
         {/* Cantidades de explosivos */}
         <div>
-          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-3 border-b border-slate-800 pb-1">Cantidades de Explosivos</p>
+          <p className="text-xs text-brand-gray font-semibold uppercase tracking-wider mb-3 border-b border-slate-200 shadow-sm pb-1">Cantidades de Explosivos</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
             {([
               ['emulex_25x400',    'Emulex 25×400'],
@@ -274,7 +274,7 @@ export default function ExplosivosPage() {
 
         {/* Perforación y faneles */}
         <div>
-          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-3 border-b border-slate-800 pb-1">Perforación y Faneles</p>
+          <p className="text-xs text-brand-gray font-semibold uppercase tracking-wider mb-3 border-b border-slate-200 shadow-sm pb-1">Perforación y Faneles</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
             <div>
               <label className={LBL}>Tipo Fanel</label>
@@ -287,16 +287,16 @@ export default function ExplosivosPage() {
             </div>
           </div>
 
-          <p className="text-xs text-slate-500 mb-2">Faneles por retardo (cantidad):</p>
+          <p className="text-xs text-brand-gray mb-2">Faneles por retardo (cantidad):</p>
           <div className="grid grid-cols-6 sm:grid-cols-10 gap-1.5">
             {FANEL_NUMS.map(n => (
               <div key={n}>
-                <label className="text-[10px] text-slate-500 text-center block mb-0.5">{n}</label>
+                <label className="text-[10px] text-brand-gray text-center block mb-0.5">{n}</label>
                 <input
                   type="number" step="1" min="0"
                   value={form.faneles[n] ?? ''}
                   onChange={e => setFanel(n, e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 text-white rounded px-1.5 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-[#c83232] placeholder:text-slate-600"
+                  className="w-full bg-slate-50 border border-slate-300 text-brand-black rounded px-1.5 py-1 text-xs text-center focus:outline-none focus:ring-1 focus:ring-brand-red placeholder:text-slate-600"
                   placeholder="0"
                 />
               </div>
@@ -308,7 +308,7 @@ export default function ExplosivosPage() {
           <button
             onClick={guardar}
             disabled={saving}
-            className="px-6 py-2 bg-[#c83232] hover:bg-red-700 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
+            className="px-6 py-2 bg-[#c83232] hover:bg-red-700 text-brand-black text-sm font-bold rounded-lg transition-colors disabled:opacity-50"
           >
             {saving ? 'Guardando...' : 'GUARDAR REGISTRO'}
           </button>
@@ -316,22 +316,22 @@ export default function ExplosivosPage() {
       </div>
 
       {/* Tabla de registros */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-slate-800 flex flex-wrap items-center gap-4">
-          <h2 className="text-sm font-bold text-white uppercase tracking-wider">Registros Guardados</h2>
+      <div className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-slate-200 shadow-sm flex flex-wrap items-center gap-4">
+          <h2 className="text-sm font-bold text-brand-black uppercase tracking-wider">Registros Guardados</h2>
           <div className="flex items-center gap-2 ml-auto">
-            <label className="text-xs text-slate-400">Fecha:</label>
+            <label className="text-xs text-slate-600">Fecha:</label>
             <input type="date" value={filtroFecha} onChange={e => setFiltroFecha(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-white rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-[#c83232]" />
+              className="bg-slate-50 border border-slate-300 text-brand-black rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-brand-red" />
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-xs min-w-[800px]">
             <thead>
-              <tr className="bg-slate-800 border-b border-slate-700">
+              <tr className="bg-slate-50 border-b border-slate-300">
                 {['Fecha','Tipo Disparo','Labor','Tipo Actividad','N° Vale','Tipo Fanel','Long. Perf.','Cargador','Jefe Guardia',''].map(h => (
-                  <th key={h} className="px-3 py-3 text-left text-slate-300 font-bold uppercase tracking-wider whitespace-nowrap">{h}</th>
+                  <th key={h} className="px-3 py-3 text-left text-slate-700 font-bold uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -341,31 +341,31 @@ export default function ExplosivosPage() {
                   <tr key={i}>
                     {Array.from({ length: 10 }).map((__, j) => (
                       <td key={j} className="px-3 py-3">
-                        <div className="h-3 bg-slate-800 rounded animate-pulse w-14" />
+                        <div className="h-3 bg-slate-50 rounded animate-pulse w-14" />
                       </td>
                     ))}
                   </tr>
                 ))
               ) : rows.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={10} className="px-6 py-12 text-center text-brand-gray">
                     No hay registros de explosivos para {filtroFecha}
                   </td>
                 </tr>
               ) : (
                 rows.map(row => (
-                  <tr key={row.id} className="hover:bg-slate-800/50 transition-colors">
-                    <td className="px-3 py-2.5 text-slate-300 whitespace-nowrap">{row.fecha}</td>
-                    <td className="px-3 py-2.5 text-slate-400">{row.tipo_disparo ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-200 font-medium max-w-[160px] truncate" title={row.labor ?? ''}>{row.labor ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-400 max-w-[120px] truncate">{row.tipo_actividad ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-400 font-mono">{row.nvale ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-400">{row.tipo_fanel ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-300 text-right font-mono">
+                  <tr key={row.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-3 py-2.5 text-slate-700 whitespace-nowrap">{row.fecha}</td>
+                    <td className="px-3 py-2.5 text-slate-600">{row.tipo_disparo ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-800 font-medium max-w-[160px] truncate" title={row.labor ?? ''}>{row.labor ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-600 max-w-[120px] truncate">{row.tipo_actividad ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-600 font-mono">{row.nvale ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-600">{row.tipo_fanel ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-700 text-right font-mono">
                       {row.longitud_perforacion != null ? `${row.longitud_perforacion} m` : '—'}
                     </td>
-                    <td className="px-3 py-2.5 text-slate-400 max-w-[120px] truncate">{row.cargador ?? '—'}</td>
-                    <td className="px-3 py-2.5 text-slate-400 max-w-[120px] truncate">{row.jefe_guardia ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-600 max-w-[120px] truncate">{row.cargador ?? '—'}</td>
+                    <td className="px-3 py-2.5 text-slate-600 max-w-[120px] truncate">{row.jefe_guardia ?? '—'}</td>
                     <td className="px-3 py-2.5">
                       <button onClick={() => deleteRow(row.id)} className="text-red-500 hover:text-red-400 transition-colors" title="Eliminar">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -381,11 +381,12 @@ export default function ExplosivosPage() {
         </div>
 
         {!loading && (
-          <div className="px-4 py-3 border-t border-slate-800">
-            <span className="text-slate-500 text-xs">{rows.length} registro(s)</span>
+          <div className="px-4 py-3 border-t border-slate-200 shadow-sm">
+            <span className="text-brand-gray text-xs">{rows.length} registro(s)</span>
           </div>
         )}
       </div>
+            </div>
     </div>
   )
 }

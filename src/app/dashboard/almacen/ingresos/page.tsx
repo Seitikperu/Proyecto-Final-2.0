@@ -92,7 +92,9 @@ export default function IngresosPage() {
   }, [busqueda, fechaDesde, fechaHasta])
 
   return (
-    <div className="p-6 space-y-4 max-w-screen-2xl mx-auto">
+    <div className="min-h-screen bg-brand-light flex flex-col">
+      {/* El header se reemplaza más abajo */}
+      <div className="flex-1 p-6 max-w-[1400px] mx-auto w-full space-y-6">
 
       {/* ── Cabecera ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -250,6 +252,7 @@ export default function IngresosPage() {
           }}
         />
       )}
+    </div>
     </div>
   )
 }
