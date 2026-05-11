@@ -171,6 +171,7 @@ export default function NuevoIngresoPage() {
         iva: 'NO',
         ubicacion: it.ubicacion || null,
         observacion: it.observacion || cab.numero_ot || null, // Incluimos info de la cabecera si aplica
+        tipo_movimiento: 'INGRESO',
       }))
       const { error: err } = await sb.from('ingreso_almacen').insert(rows)
       if (err) throw err
@@ -368,7 +369,7 @@ export default function NuevoIngresoPage() {
               
               <button onClick={guardarBD} disabled={!cabOk || items.length === 0 || guardando}
                 className="bg-brand-black text-white hover:bg-slate-800 font-extrabold px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:bg-slate-300 tracking-widest text-sm flex items-center gap-2">
-                {guardando ? 'GUARDANDO...' : 'REGISTRAR A BD'}
+                {guardando ? 'GUARDANDO...' : 'GENERAR INGRESO'}
               </button>
             </div>
           </div>
