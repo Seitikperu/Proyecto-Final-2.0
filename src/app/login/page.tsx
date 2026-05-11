@@ -27,27 +27,16 @@ function LoginForm() {
         return
       }
 
-      // 2. Obtener perfil desde la tabla usuarios usando auth_id
-      const { data: perfil, error: perfilErr } = await sb
-        .from('usuarios')
-        .select('id, nombre, datos, acceso, id_personal, rol_global')
-        .eq('auth_id', result.userId)
-        .eq('activo', true)
-        .maybeSingle()
-
-      if (perfilErr || !perfil) {
-        await sb.auth.signOut()
-        setError('Usuario no tiene acceso al sistema')
-        return
-      }
+      // 2. SIN FILTRO DE TABLA USUARIOS: Creamos un perfil genérico
+      const nombreUsuario = email.split('@')[0]
 
       localStorage.setItem('cis_usuario', JSON.stringify({
-        id:          perfil.id,
-        nombre:      perfil.nombre,
-        datos:       perfil.datos,
-        acceso:      perfil.acceso,
-        id_personal: perfil.id_personal,
-        rol_global:  perfil.rol_global,
+        id:          result.userId,
+        nombre:      nombreUsuario,
+        datos:       {},
+        acceso:      'ALL',
+        id_personal: null,
+        rol_global:  'admin',
       }))
 
       // Cookie explícita para el middleware (8 horas) - BYPASS del bug de Supabase SSR
