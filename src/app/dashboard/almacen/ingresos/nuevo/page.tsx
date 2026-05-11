@@ -176,10 +176,15 @@ export default function NuevoIngresoPage() {
       if (err) throw err
       
       showToast('success', '¡Ingreso registrado!', 'Los datos se guardaron correctamente en BD.')
-      // Redirigimos a la lista principal después de 1 segundo
-      setTimeout(() => {
-        window.location.href = '/dashboard/almacen/ingresos'
-      }, 1000)
+      // Limpiar items y campos específicos de cabecera para continuar
+      setItems([])
+      setCab(c => ({
+        ...c,
+        numero_documento: '',
+        numero_orden_compra: '',
+        numero_ot: '',
+      }))
+      setObservacion('')
       
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Error al guardar'
