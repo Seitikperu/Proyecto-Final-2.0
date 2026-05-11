@@ -100,7 +100,9 @@ export default function SelectProjectPage() {
       descripcion: p.descripcion,
       ...estilo(p.nombre),
     }))
-    setTimeout(() => router.push('/select-module'), 350)
+    setTimeout(() => {
+      window.location.href = '/select-module'
+    }, 350)
   }
 
   async function cerrarSesion() {
