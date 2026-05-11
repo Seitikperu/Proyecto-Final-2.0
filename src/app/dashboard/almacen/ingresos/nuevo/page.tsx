@@ -81,11 +81,11 @@ export default function NuevoIngresoPage() {
     sb.from('personal').select('trabajador').eq('Acceso_Almacen', 'SI').order('trabajador').limit(500)
       .then(({ data }) => setPersonal(data ?? []))
 
-    sb.from('cat_origen').select('valor').order('valor').limit(100)
-      .then(({ data }) => setOrigenes((data ?? []).map((r: { valor: string }) => r.valor)))
+    sb.from('cat_origen').select('nombre').order('nombre').limit(100)
+      .then(({ data }) => setOrigenes((data ?? []).map((r: any) => r.nombre)))
 
-    sb.from('cat_tipo_documento').select('valor').order('valor').limit(100)
-      .then(({ data }) => setTiposDocs((data ?? []).map((r: { valor: string }) => r.valor)))
+    sb.from('cat_tipo_documento').select('nombre').order('nombre').limit(100)
+      .then(({ data }) => setTiposDocs((data ?? []).map((r: any) => r.nombre)))
   }, [])
 
   // ── Búsqueda Material ──
