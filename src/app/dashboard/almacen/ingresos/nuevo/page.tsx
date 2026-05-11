@@ -197,7 +197,7 @@ export default function NuevoIngresoPage() {
         {/* Cabecera / Título */}
         <div className="bg-brand-black px-6 py-4 flex items-center justify-between border-b border-slate-700">
           <div className="flex items-center gap-4">
-            <BackButton fallback="/dashboard/almacen/ingresos" />
+            <BackButton />
             <h1 className="text-xl font-extrabold text-white tracking-wide">NUEVO INGRESO ALMACÉN</h1>
           </div>
         </div>
