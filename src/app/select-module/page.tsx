@@ -114,9 +114,7 @@ export default function SelectModulePage() {
 
   function handleSelect(mod: typeof MODULES[0]) {
     setSelecting(mod.id)
-    setTimeout(() => {
-      window.location.href = mod.href
-    }, 280)
+    setTimeout(() => router.push(mod.href), 280)
   }
 
   if (!usuario || !proyecto) {

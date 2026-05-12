@@ -100,16 +100,13 @@ export default function SelectProjectPage() {
       descripcion: p.descripcion,
       ...estilo(p.nombre),
     }))
-    setTimeout(() => {
-      window.location.href = '/select-module'
-    }, 350)
+    setTimeout(() => router.push('/select-module'), 350)
   }
 
   async function cerrarSesion() {
     await sb.auth.signOut()
     localStorage.removeItem('cis_usuario')
     localStorage.removeItem('cis_proyecto')
-    document.cookie = 'cis_session=; path=/; max-age=0'
     router.push('/login')
   }
 

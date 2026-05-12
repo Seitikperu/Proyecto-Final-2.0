@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { getSupabaseClient } from '@/lib/supabase/client'
-
+import ModalIngreso from '@/components/almacen/ModalIngreso'
 import { showToast } from '@/components/ui/Toast'
 import type { IngresoAlmacen } from '@/types/database'
 import { BackButton } from '@/components/ui/BackButton'
@@ -15,7 +15,7 @@ export default function IngresosPage() {
   const [rows,       setRows]       = useState<IngresoAlmacen[]>([])
   const [count,      setCount]      = useState(0)
   const [loading,    setLoading]    = useState(true)
-
+  const [showModal,  setShowModal]  = useState(false)
   const [page,       setPage]       = useState(1)
   const [busqueda,   setBusqueda]   = useState('')
   const [fechaDesde, setFechaDesde] = useState('')
@@ -119,7 +119,7 @@ export default function IngresosPage() {
           </p>
         </div>
         <button
-          onClick={() => window.location.href = '/dashboard/almacen/ingresos/nuevo'}
+          onClick={() => setShowModal(true)}
           className="inline-flex items-center gap-2 bg-brand-red hover:bg-red-700 active:scale-95 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
@@ -239,7 +239,19 @@ export default function IngresosPage() {
         )}
       </div>
 
-
+      {/* ── Modal Nuevo Ingreso ── */}
+      {showModal && (
+        <ModalIngreso
+          onClose={() => setShowModal(false)}
+          onSaved={() => {
+            setShowModal(false)
+            // Realtime actualiza la tabla automáticamente;
+            // si el usuario está en página > 1, volvemos a la 1
+            if (page !== 1) setPage(1)
+            showToast('success', '¡Ingreso registrado!', 'Los datos se guardaron correctamente en Supabase.')
+          }}
+        />
+      )}
     </div>
     </div>
   )

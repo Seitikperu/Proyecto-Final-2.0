@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useSalidas } from '@/lib/hooks/useAlmacen'
-
+import ModalSalida from '@/components/almacen/ModalSalida'
 import type { AlmacenFilter } from '@/types/database'
 import { BackButton } from '@/components/ui/BackButton'
 
@@ -11,7 +11,7 @@ export default function SalidasPage() {
   const [filter, setFilter] = useState<AlmacenFilter>({})
   const [page, setPage] = useState(1)
   const { data, count, totalPages, loading } = useSalidas(filter, page, 25)
-
+  const [showModal, setShowModal] = useState(false)
 
   // refetch manual cambiando filtro + page para forzar re-render
   const refetch = () => setPage(p => { const same = p; setFilter(f => ({ ...f })); return same })
@@ -29,7 +29,7 @@ export default function SalidasPage() {
           <p className="text-brand-gray text-sm mt-0.5">{loading ? 'Cargando...' : count.toLocaleString('es-NI') + ' registros'}</p>
         </div>
         <button
-          onClick={() => window.location.href = '/dashboard/almacen/salidas/nueva'}
+          onClick={() => setShowModal(true)}
           className="inline-flex items-center gap-2 bg-brand-red hover:bg-red-700 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-brand-red/20 hover:shadow-brand-red/30">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
@@ -103,7 +103,12 @@ export default function SalidasPage() {
         )}
       </div>
 
-
+      {showModal && (
+        <ModalSalida
+          onClose={() => setShowModal(false)}
+          onSaved={() => { refetch(); setShowModal(false) }}
+        />
+      )}
     </div>
     </div>
   )
