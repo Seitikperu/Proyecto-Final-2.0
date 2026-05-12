@@ -27,7 +27,7 @@ interface Proyecto {
 }
 
 interface CisUser {
-  id: number
+  id: string
   nombre: string
 }
 
@@ -53,31 +53,15 @@ export default function SelectProjectPage() {
     }
   }, [router])
 
-  async function cargarProyectos(usuarioId: number) {
+  async function cargarProyectos(usuarioId: string) {
     setCargando(true)
     setErrorMsg(null)
     try {
-      // Obtener proyecto_ids del usuario
-      const { data: upData, error: upErr } = await sb
-        .from('usuario_proyecto')
-        .select('proyecto_id')
-        .eq('usuario_id', usuarioId)
-        .eq('activo', true)
-
-      if (upErr) throw upErr
-
-      const ids = (upData ?? []).map((r: { proyecto_id: number }) => r.proyecto_id)
-
-      if (ids.length === 0) {
-        setProyectos([])
-        return
-      }
-
-      // Obtener detalles de los proyectos accesibles
+      // Al eliminar los filtros restrictivos a nivel de base de datos,
+      // cargamos directamente todos los proyectos activos.
       const { data: pData, error: pErr } = await sb
         .from('proyectos')
         .select('id, nombre, descripcion, ubicacion, pais, tipo')
-        .in('id', ids)
         .eq('activo', true)
         .order('nombre')
 
