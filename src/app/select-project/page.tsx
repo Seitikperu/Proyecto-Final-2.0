@@ -67,9 +67,9 @@ export default function SelectProjectPage() {
 
       if (pErr) throw pErr
       setProyectos((pData ?? []) as Proyecto[])
-    } catch (e) {
+    } catch (e: any) {
       console.error(e)
-      setErrorMsg('No se pudieron cargar los proyectos. Verifica tu conexión.')
+      setErrorMsg(`Error: ${e.message || 'No se pudieron cargar los proyectos. Verifica tu conexión.'}`)
     } finally {
       setCargando(false)
     }
