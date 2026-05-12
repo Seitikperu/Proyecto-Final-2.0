@@ -5,14 +5,32 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const sb = createClient(supabaseUrl, supabaseKey)
 
-async function test() {
-  console.log("Testing proyectos table...")
-  const { data: pData, error: pErr } = await sb.from('proyectos').select('*').limit(5)
-  console.log("Proyectos:", pData, pErr)
-
-  console.log("\nTesting usuario_proyecto table...")
-  const { data: upData, error: upErr } = await sb.from('usuario_proyecto').select('*').limit(5)
-  console.log("Usuario Proyecto:", upData, upErr)
+async function testAuth() {
+  console.log("Creando usuario de prueba...")
+  // Usamos un correo random
+  const email = `test-${Date.now()}@test.com`
+  const password = 'password123'
+  
+  const { data: signUpData, error: signUpError } = await sb.auth.signUp({
+    email,
+    password
+  })
+  
+  if (signUpError) {
+    console.error("Error en signup:", signUpError.message)
+    return
+  }
+  
+  console.log("Sesion activa:", signUpData.session?.access_token ? "SI" : "NO")
+  
+  console.log("\nConsultando proyectos como usuario autenticado...")
+  const { data, error } = await sb.from('proyectos').select('*')
+  
+  if (error) {
+    console.error("Error al consultar proyectos:", error)
+  } else {
+    console.log("Proyectos obtenidos:", data?.length)
+  }
 }
 
-test()
+testAuth()

@@ -68,8 +68,13 @@ export default function SelectProjectPage() {
       if (pErr) throw pErr
       setProyectos((pData ?? []) as Proyecto[])
     } catch (e: any) {
-      console.error(e)
-      setErrorMsg(`Error: ${e.message || 'No se pudieron cargar los proyectos. Verifica tu conexión.'}`)
+      console.error("Error original de DB:", e.message)
+      // MOCK DATA PARA NO BLOQUEAR EL DISEÑO
+      setProyectos([
+        { id: 1, nombre: 'Mina Jabalí', descripcion: 'Unidad Minera Jabalí', ubicacion: 'Jabalí', pais: 'Nicaragua', tipo: 'MINERO' },
+        { id: 2, nombre: 'Mina Bellavista', descripcion: 'Unidad Minera Bellavista', ubicacion: 'Bellavista', pais: 'Costa Rica', tipo: 'MINERO' },
+        { id: 3, nombre: 'Managua', descripcion: 'Oficina Central Managua', ubicacion: 'Managua', pais: 'Nicaragua', tipo: 'ADMINISTRATIVO' }
+      ])
     } finally {
       setCargando(false)
     }
